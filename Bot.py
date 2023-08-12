@@ -62,6 +62,37 @@ async def bin(_, m: Message):
             ask = inputm[:bincode]
             req = requests.get(f"api.apilayer.com/G6wqRUaOVzlvwlvavzHeefh2j1exTjse/{ask}").json()
             res = req["result"]
+$curl = curl_init();
+
+curl_setopt_array($curl, [
+	CURLOPT_URL => "https://bin-ip-checker.p.rapidapi.com/?bin=448590",
+	CURLOPT_RETURNTRANSFER => true,
+	CURLOPT_ENCODING => "",
+	CURLOPT_MAXREDIRS => 10,
+	CURLOPT_TIMEOUT => 30,
+	CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+	CURLOPT_CUSTOMREQUEST => "POST",
+	CURLOPT_POSTFIELDS => json_encode([
+		'bin' => '448590'
+	]),
+	CURLOPT_HTTPHEADER => [
+		"X-RapidAPI-Host: bin-ip-checker.p.rapidapi.com",
+		"X-RapidAPI-Key: 8591782eb8msh35855b7b3e23774p11ee22jsncda4429bc4ec",
+		"content-type: application/json"
+	],
+]);
+
+$response = curl_exec($curl);
+$err = curl_error($curl);
+
+curl_close($curl);
+
+if ($err) {
+	echo "cURL Error #:" . $err;
+} else {
+	echo $response;
+}
+            
 
             if res == False:
                 return await mafia.edit("❌ #INVALID_BIN ❌\n\nPlease provide a valid bin.")
