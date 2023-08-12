@@ -63,32 +63,57 @@ async def bin(_, m: Message):
             bincode = 6
             ask = inputm[:bincode]
             req = requests.get(f"https://api.bincodes.com/bin/json/0d6542332875d2012b12f3c9d17b8007/{ask}/").json()
-            res = req["result"]
-
-            if res == False:
+            da = req
+            print(da)
+            if "False" in str(da):
                 return await mafia.edit("❌ #INVALID_BIN ❌\n\nPlease provide a valid bin.")
-            da = req["data"]
-            bi = da["bin"]
-            ve = da["vendor"]
-            ty = da["type"]
-            le = da["level"]
-            ban = da["bank"]
-            co = da["country"]
-            cc = da["countryInfo"]
-            nm = cc["name"]
-            em = cc["emoji"]
-            cod = cc["code"]
-            dial = cc["dialCode"]
+            #da = req["data"]
+            bi = str(da["bin"])
+            ve = str(da["card"])
+            #ve = da["vendor"]
+            ty = str(da["type"])
+            le = str(da["level"])
+            ban = str(da["bank"])
+            co = str(da["country"])
+            cc = str(da["countrycode"])
+            #nm = cc["name"]
+            #em = cc["emoji"]
+            #cod = cc["code"]
+            #dial = cc["dialCode"]
 
             mfrom = m.from_user.mention
             caption = f"""
-    ╔ Valid :- {res} ✅\n╚ Bin :- {bi}\n\n╔ Brand :- {ve}\n╠ Type :- {ty}\n╚ Level :- {le}\n\n╔ Bank :- {ban} ({co})\n╠ Country :- {nm} {em}\n╠ Alpha2 :- {cod}\n╚ DialCode :- {dial}\n\n↠ Checked By :- {mfrom}\n↠ Bot By :- [Denuwan](https://github.com/ImDenuwan/Bin-Checker-Bot)
+    ╔ Valid :- Yes ✅\n╚ Bin :- {bi}\n\n╔ Brand :- {ve}\n╠ Type :- {ty}\n╚ Level :- {le}\n\n╔ Bank :- {ban} ({co})\n╠ Country :- {co} {cc}\n╚ DialCode :- {da['phone']}\n\n↠ Checked By :- {str(mfrom)}\n↠ Bot By :- [Denuwan](https://github.com/ImDenuwan/Bin-Checker-Bot)
     """
             await mafia.edit(caption, disable_web_page_preview=True)
             
         except Exception as e:
-            await bot.reply_text(f"Oops Error!\n{e}\n\nReport This Bug to Bot Owner.")
+            await mafia.reply_text(f"Oops Error!\n{e}\n\nReport This Bug to Bot Owner.")
 
 print("Bot IS Alive Now")
 
 Bot.run()
+   #da = req["data"]
+            bi = str(da["bin"])
+            ve = str(da["card"])
+            #ve = da["vendor"]
+            ty = str(da["type"])
+            le = str(da["level"])
+            ban = str(da["bank"])
+            co = str(da["country"])
+            cc = str(da["countrycode"])
+            #nm = cc["name"]
+            #em = cc["emoji"]
+            #cod = cc["code"]
+            #dial = cc["dialCode"]
+
+            mfrom = m.from_user.mention
+            caption = f"""
+    ╔ Valid :- Yes ✅\n╚ Bin :- {bi}\n\n╔ Brand :- {ve}\n╠ Type :- {ty}\n╚ Level :- {le}\n\n╔ Bank :- {ban} ({co})\n╠ Country :- {co} {cc}\n╚ DialCode :- {da['phone']}\n\n↠ Checked By :- {str(mfrom)}\n↠ Bot By :- [Denuwan](https://github.com/ImDenuwan/Bin-Checker-Bot)
+    """
+            await mafia.edit(caption, disable_web_page_preview=True)
+            
+        except Exception as e:
+            await mafia.reply_text(f"Oops Error!\n{e}\n\nReport This Bug to Bot Owner.")
+
+prin
