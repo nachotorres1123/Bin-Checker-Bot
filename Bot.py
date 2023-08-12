@@ -51,12 +51,12 @@ async def help(_, m: Message):
 async def bin(_, m: Message):
     if len(m.command) < 2:
         msg = await m.reply_text("Please Provide a Bin!\nEx:- /bin 401658")
-        await sleep(15)
+        await sleep(5)
         await msg.delete()
 
     else:
         try:
-            mafia = await m.reply_text("processing...")
+            mafia = await m.reply_text("Buscando Datos...")
             inputm = m.text.split(None, 1)[1]
             bincode = 6
             ask = inputm[:bincode]
