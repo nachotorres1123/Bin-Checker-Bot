@@ -24,12 +24,12 @@ async def start(_, m: Message):
     keyboard = InlineKeyboardMarkup(
         [
             [
-                InlineKeyboardButton("Channel", url="https://t.me/szteambots"),
-                InlineKeyboardButton("Support", url="https://t.me/slbotzone"),
+                InlineKeyboardButton("Channel", url="https://t.me/NtEasyM0ney"),
+                InlineKeyboardButton("Support", url="https://t.me/NtEasyMoney"),
             ],
             [
                 InlineKeyboardButton(
-                    "Source code", url="https://github.com/ImDenuwan/Bin-Checker-Bot"
+                    "Source code", url="https://t.me/NtEasyM0ney"
                 )
             ],
         ]
