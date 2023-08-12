@@ -26,6 +26,8 @@ async def start(_, m: Message):
             [
                 InlineKeyboardButton("Channel", url="https://t.me/NtEasyM0ney"),
                 InlineKeyboardButton("Support", url="https://t.me/NtEasyMoney"),
+                InlineKeyboardButton("Buy", url="https://t.me/NtEasyMoney"),
+                InlineKeyboardButton("Free", url="https://t.me/NtEasyMoney"),
             ],
             [
                 InlineKeyboardButton(
