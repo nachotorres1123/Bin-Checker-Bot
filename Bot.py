@@ -1,21 +1,3 @@
-<?php
-
-$client = new \GuzzleHttp\Client();
-
-$response = $client->request('POST', 'https://bin-ip-checker.p.rapidapi.com/?bin=448590', [
-	'body' => '{
-    "bin": "448590"
-}',
-	'headers' => [
-		'X-RapidAPI-Host' => 'bin-ip-checker.p.rapidapi.com',
-		'X-RapidAPI-Key' => '8591782eb8msh35855b7b3e23774p11ee22jsncda4429bc4ec',
-		'content-type' => 'application/json',
-	],
-]);
-
-echo $response->getBody();
-
-
 import requests
 from pyrogram import Client, filters
 from configs import config
@@ -78,7 +60,16 @@ async def bin(_, m: Message):
             inputm = m.text.split(None, 1)[1]
             bincode = 6
             ask = inputm[:bincode]
-            req = requests.get(f"https://madbin.herokuapp.com/api/{ask}").json()
+            req = requests.get(f"'POST', 'https://bin-ip-checker.p.rapidapi.com/?bin=448590', [
+	'body' => '{
+    "bin": "448590"
+}',
+	'headers' => [
+		'X-RapidAPI-Host' => 'bin-ip-checker.p.rapidapi.com',
+		'X-RapidAPI-Key' => '8591782eb8msh35855b7b3e23774p11ee22jsncda4429bc4ec',
+		'content-type' => 'application/json',
+	],
+]").json()
             res = req["result"]
 
             if res == False:
