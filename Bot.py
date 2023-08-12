@@ -62,7 +62,22 @@ async def bin(_, m: Message):
             inputm = m.text.split(None, 1)[1]
             bincode = 6
             ask = inputm[:bincode]
-            req = requests.get(f"https://api.bincodes.com/bin/json/0d6542332875d2012b12f3c9d17b8007/{ask}/").json()
+            req = import requests
+
+url = "https://bin-ip-checker.p.rapidapi.com/"
+
+querystring = {"bin":"448590"}
+
+payload = { "bin": "448590" }
+headers = {
+	"content-type": "application/json",
+	"X-RapidAPI-Key": "8591782eb8msh35855b7b3e23774p11ee22jsncda4429bc4ec",
+	"X-RapidAPI-Host": "bin-ip-checker.p.rapidapi.com"
+}
+
+response = requests.post(url, json=payload, headers=headers, params=querystring)
+
+print(response.json())
             da = req
             print(da)
             if "False" in str(da):
