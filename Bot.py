@@ -51,7 +51,7 @@ async def help(_, m: Message):
 async def bin(_, m: Message):
     if len(m.command) < 2:
         msg = await m.reply_text("Please Provide a Bin!\nEx:- /bin 401658")
-        await sleep(5)
+        await sleep(15)
         await msg.delete()
 
     else:
