@@ -1,4 +1,4 @@
-import requests
+Iimport requests
 from pyrogram import Client, filters
 from configs import config
 from asyncio import sleep
@@ -60,7 +60,7 @@ async def bin(_, m: Message):
             inputm = m.text.split(None, 1)[1]
             bincode = 6
             ask = inputm[:bincode]
-            req = requests.get(f"https://madbin.herokuapp.com/api/{ask}").json()
+            req = requests.get(f"https://api.apilayer.com/bincheck/G6wqRUaOVzlvwlvavzHeefh2j1exTjse").json()
             res = req["result"]
 
             if res == False:
