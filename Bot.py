@@ -26,17 +26,33 @@ async def start(_, m: Message):
             [
                 InlineKeyboardButton("Channel", url="https://t.me/NtEasyM0ney"),
                 InlineKeyboardButton("Support", url="https://t.me/NtEasyMoney"),
-                InlineKeyboardButton("Buy", url="https://t.me/NtEasyMoney"),
-                InlineKeyboardButton("Free", url="https://t.me/NtEasyMoney"),
+                InlineKeyboardButton("Channel", url="https://t.me/NtEasyM0ney"),
+                InlineKeyboardButton("Support", url="https://t.me/NtEasyMoney"),
             ],
             [
                 InlineKeyboardButton(
-                    "Admin", url="https://t.me/NtEasyM0ney"
-                ),
-                InlineKeyboardButton(
-                    "prueba 2", url="https://t.me/NtEasyM0ney"
+                    "Source code", url="https://t.me/NtEasyM0ney"
                 )
             ],
+            [
+                InlineKeyboardButton(
+                    "Source code", url="https://t.me/NtEasyM0ney"
+                )
+            ],
+            [
+                InlineKeyboardButton(
+                    "Source code", url="https://t.me/NtEasyM0ney"
+                )
+            ],
+            [
+                InlineKeyboardButton(
+                    "Source code", url="https://t.me/NtEasyM0ney"
+                )
+            ],
+
+
+
+            
         ]
     )
     await m.reply_text(
@@ -48,18 +64,8 @@ async def start(_, m: Message):
 @Bot.on_message(filters.command("help"))
 async def help(_, m: Message):
     await m.reply_text(
-        "/start - To check bot alive.\n//Pro - Solo Nt Y Admin\n/help - To see help menu.\n/bin [qoury] - To check Bin is valide or Invalid.
-        
-        
-        "
+        "/start - To check bot alive.\n/help - To see help menu.\n/bin [qoury] - To check Bin is valide or Invalid."
     )
-    
-    
-@Bot.on_message(filters.command("pro"))
-async def pro(_, m: Message):
-    await m.reply_text(
-        "/start - pruebas 1.\n/help - pruebas2.\n/bin [qoury] - nt Pruebas 3 ."
-)
 
 
 @Bot.on_message(filters.command("bin"))
@@ -75,7 +81,7 @@ async def bin(_, m: Message):
             inputm = m.text.split(None, 1)[1]
             bincode = 6
             ask = inputm[:bincode]
-            req = requests.get(f"https://api.bincodes.com/bin/json/0d6542332875d2012b12f3c9d17b8007/{ask}").json()
+            req = requests.get(f"https://madbin.herokuapp.com/api/{ask}").json()
             res = req["result"]
 
             if res == False:
