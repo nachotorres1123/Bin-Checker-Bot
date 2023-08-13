@@ -64,8 +64,16 @@ async def start(_, m: Message):
 @Bot.on_message(filters.command("help"))
 async def help(_, m: Message):
     await m.reply_text(
-        "/start - To check bot alive.\n/help - To see help menu.\n/bin [qoury] - To check Bin is valide or Invalid."
+        "/start - To check bot alive.\n/Pro - Solo @NtEasyMoney o admin.\n/help - To see help menu.\n/bin [423487] - To check Bin is valide or Invalid."
+    ) 
+
+
+@Bot.on_message(filters.command("admin"))
+async def admin(_, m: Message):
+    await m.reply_text(
+        "/start - To check bot alive.\n/admin - Solo @NtEasyMoney."
     )
+
 
 
 @Bot.on_message(filters.command("bin"))
@@ -77,7 +85,7 @@ async def bin(_, m: Message):
 
     else:
         try:
-            mafia = await m.reply_text("processing...")
+            mafia = await m.reply_text("buscando tu bin...")
             inputm = m.text.split(None, 1)[1]
             bincode = 6
             ask = inputm[:bincode]
@@ -111,3 +119,20 @@ async def bin(_, m: Message):
 print("Bot IS Alive Now")
 
 Bot.run()
+ #INVALID_BIN ❌\n\nPlease provide a valid bin.")
+            da = req["data"]
+            bi = da["bin"]
+            ve = da["vendor"]
+            ty = da["type"]
+            le = da["level"]
+            ban = da["bank"]
+            co = da["country"]
+            cc = da["countryInfo"]
+            nm = cc["name"]
+            em = cc["emoji"]
+            cod = cc["code"]
+            dial = cc["dialCode"]
+
+            mfrom = m.from_user.mention
+            caption = f"""
+    ╔ Valid :- {res} ✅\n╚ Bin :- {bi}\n\n╔ Brand :- {ve}\n╠ Type :- {ty}\n╚ Level :- {le}\n\n╔ Bank :
