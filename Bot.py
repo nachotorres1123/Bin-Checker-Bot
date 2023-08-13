@@ -54,15 +54,19 @@ async def bin(_, m: Message):
             mafia = await m.reply_text("Processing...")
             inputm = m.text.split(None, 1)[1]
             bincode = len(inputm)
-            
-            api_key = "0d6542332875d2012b12f3c9d17b8007"
-            url = "https://api.bincodes.com/bin"
-            headers = {
-                "Accept-Version": "3",
-                "Authorization": f"Bearer {api_key}",
-            }
-            payload = {"bin": inputm}
-            response = requests.post(url, headers=headers, json=payload)
+         
+
+url = "https://api.apilayer.com/bincheck/{bin_code}"
+
+payload = {}
+headers= {
+  "apikey": "G6wqRUaOVzlvwlvavzHeefh2j1exTjse"
+}
+
+response = requests.request("GET", url, headers=headers, data = payload)
+
+status_code = response.status_code
+result = response.text
             
             if response.status_code == 200:
                 data = response.json()
