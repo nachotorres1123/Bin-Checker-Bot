@@ -55,8 +55,8 @@ async def bin(_, m: Message):
             inputm = m.text.split(None, 1)[1]
             bincode = len(inputm)
             
-            api_key = "8591782eb8msh35855b7b3e23774p11ee22jsncda4429bc4ec"
-            url = "https://lookup.bincheck.io/api/bin"
+            api_key = "0d6542332875d2012b12f3c9d17b8007"
+            url = "https://api.bincodes.com/bin"
             headers = {
                 "Accept-Version": "3",
                 "Authorization": f"Bearer {api_key}",
