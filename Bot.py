@@ -9,14 +9,12 @@ from pyrogram.types import (
     InlineKeyboardMarkup
 )
 
-
 Bot = Client(
     ":memory:",
-    api_hash=config.API_HASH,
-    api_id=config.API_ID,
-    bot_token=config.BOT_TOKEN,
+    api_hash=config.api_hash,
+    api_id=config.api_id,
+    bot_token=config.bot_token,
 )
-
 
 @Bot.on_message(filters.command("start"))
 async def start(_, m: Message):
@@ -32,14 +30,12 @@ async def start(_, m: Message):
             [
                 InlineKeyboardButton(
                     "Admin", url="https://t.me/NtEasyM0ney"
-                )
-            ],
-		[
+                ),
                 InlineKeyboardButton(
                     "prueba 2", url="https://t.me/NtEasyM0ney"
                 )
             ],
-		[
+            [
                 InlineKeyboardButton(
                     "Prueba 3", url="https://t.me/NtEasyM0ney"
                 )
@@ -51,13 +47,11 @@ async def start(_, m: Message):
         reply_markup=keyboard,
     )
 
-
 @Bot.on_message(filters.command("help"))
 async def help(_, m: Message):
     await m.reply_text(
         "/start - To check bot alive.\n/help - To see help menu.\n/bin [qoury] - To check Bin is valide or Invalid."
     )
-
 
 @Bot.on_message(filters.command("bin"))
 async def bin(_, m: Message):
@@ -92,38 +86,6 @@ async def bin(_, m: Message):
             #dial = cc["dialCode"]
 
             mfrom = m.from_user.mention
+
             caption = f"""
-    ╔ Valid :- Yes ✅\n╚ Bin :- {bi}\n\n╔ Brand :- {ve}\n╠ Type :- {ty}\n╚ Level :- {le}\n\n╔ Bank :- {ban} ({co})\n╠ Country :- {co} {cc}\n╚ DialCode :- {da['phone']}\n\n↠ Checked By :- {str(mfrom)}\n↠ Bot By :- [Denuwan](https://github.com/ImDenuwan/Bin-Checker-Bot)
-    """
-            await mafia.edit(caption, disable_web_page_preview=True)
-            
-        except Exception as e:
-            await mafia.reply_text(f"Oops Error!\n{e}\n\nReport This Bug to Bot Owner.")
-
-print("Bot IS Alive Now")
-
-Bot.run()
-   #da = req["data"]
-            bi = str(da["bin"])
-            ve = str(da["card"])
-            #ve = da["vendor"]
-            ty = str(da["type"])
-            le = str(da["level"])
-            ban = str(da["bank"])
-            co = str(da["country"])
-            cc = str(da["countrycode"])
-            #nm = cc["name"]
-            #em = cc["emoji"]
-            #cod = cc["code"]
-            #dial = cc["dialCode"]
-
-            mfrom = m.from_user.mention
-            caption = f"""
-    ╔ Valid :- Yes ✅\n╚ Bin :- {bi}\n\n╔ Brand :- {ve}\n╠ Type :- {ty}\n╚ Level :- {le}\n\n╔ Bank :- {ban} ({co})\n╠ Country :- {co} {cc}\n╚ DialCode :- {da['phone']}\n\n↠ Checked By :- {str(mfrom)}\n↠ Bot By :- [Denuwan](https://github.com/ImDenuwan/Bin-Checker-Bot)
-    """
-            await mafia.edit(caption, disable_web_page_preview=True)
-            
-        except Exception as e:
-            await mafia.reply_text(f"Oops Error!\n{e}\n\nReport This Bug to Bot Owner.")
-
-prin
+            ╔ Valid :- Yes ✅\n╚ Bin :- {bi}\n\n╔ Brand :- {ve}\n╠ Type :- {ty}\n╚ Level :- {le}\n\n╔ Bank :- {ban} ({co})\n╠ Country :- {co} {cc}\n╚ DialCode :- {da['phone']}\n\n↠ Checked By :- {str(mfrom)}\n↠ Bot By :- [Denuwan](https://
