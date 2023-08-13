@@ -81,27 +81,27 @@ async def bin(_, m: Message):
             inputm = m.text.split(None, 1)[1]
             bincode = 6
             ask = inputm[:bincode]
-            req = requests.get(f"https://api.bincodes.com/bin/json/0d6542332875d2012b12f3c9d17b8007/{ask}").json()
-            res = req["result"]
 
-            if res == False:
+            # Hacer una solicitud GET a la API de bincheck.io
+            url = f"https://lookup.bincheck.io/bin/{ask}"
+            response = requests.get(url)
+            data = response.json()
+
+            # Analizar los datos JSON devueltos por la API
+            success = data['success']
+            if not success:
                 return await mafia.edit("❌ #INVALID_BIN ❌\n\nPlease provide a valid bin.")
-            da = req["data"]
-            bi = da["bin"]
-            ve = da["vendor"]
-            ty = da["type"]
-            le = da["level"]
-            ban = da["bank"]
-            co = da["country"]
-            cc = da["countryInfo"]
-            nm = cc["name"]
-            em = cc["emoji"]
-            cod = cc["code"]
-            dial = cc["dialCode"]
+            card = data['card']
+            country = card['country']
+            brand = card['brand']
+            card_type = card['type']
+            level = card['level']
+            bank = card['bank']
 
+            # Formatear la salida en Markdown
             mfrom = m.from_user.mention
             caption = f"""
-    ╔ Valid :- {res} ✅\n╚ Bin :- {bi}\n\n╔ Brand :- {ve}\n╠ Type :- {ty}\n╚ Level :- {le}\n\n╔ Bank :- {ban} ({co})\n╠ Country :- {nm} {em}\n╠ Alpha2 :- {cod}\n╚ DialCode :- {dial}\n\n↠ Checked By :- {mfrom}\n↠ Bot By :- [Denuwan](https://github.com/ImDenuwan/Bin-Checker-Bot)
+    ╔ Valid :- {success} ✅\n╚ Bin :- {ask}\n\n╔ Brand :- {brand}\n╠ Type :- {card_type}\n╚ Level :- {level}\n\n╔ Bank :- {bank} ({country})\n\n↠ Checked By :- {mfrom}\n↠ Bot By :- [Denuwan](https://github.com/ImDenuwan/Bin-Checker-Bot)
     """
             await mafia.edit(caption, disable_web_page_preview=True)
             
