@@ -61,7 +61,7 @@ async def inicio(_, m: Message):
 @Bot.on_message(filters.command("ayuda"))
 async def ayuda(_, m: Message):
     await m.reply_text(
-        "/inicio - Verificar si el bot está activo.\n/ayuda - Ver el menú de ayuda.\n/bin [consulta] - Verificar si un Bin es válido o inválido.\n/datos - Obtener datos de una URL."
+        "/inicio - Verificar si el bot está activo.\n/ayuda - Ver el menú de ayuda.\n/bin [consulta] - Verificar si un Bin es válido o inválido.\n/cck [tarjeta] - Verificar si una tarjeta de crédito es válida o inválida.\n/datos - Obtener datos de una URL."
     )
 
 @Bot.on_message(filters.command("bin"))
@@ -113,27 +113,26 @@ Código fuente del bot: [GitHub](https://github.com/ImDenuwan/Bin-Checker-Bot)
         except Exception as e:
             await m.reply_text(f"¡Ups! Se produjo un error:\n{e}\n\nPor favor, informa este error al propietario del bot.")
 
-@Bot.on_message(filters.command("datos"))  # Nuevo comando para obtener datos
-async def obtener_datos(_, m: Message):
-    try:
-        url = "https://api.apilayer.com/bincheck/{codigo_bin}"
-        datos_payload = {}
-        cabeceras = {
-            "apikey": "G6wqRUaOVzlvwlvavzHeefh2j1exTjse"
-        }
-        
-        respuesta = requests.get(url, headers=cabeceras, data=datos_payload)
-        
-        codigo_estado = respuesta.status_code
-        resultado = respuesta.text
-        
-        if codigo_estado == 200:
-            await m.reply_text(f"Código de estado: {codigo_estado}\n\nResultado:\n{resultado}")
-        else:
-            await m.reply_text(f"No se pudo obtener los datos. Código de estado: {codigo_estado}")
-            
-    except Exception as e:
-        await m.reply_text(f"Se produjo un error:\n{e}")
+@Bot.on_message(filters.command("cck"))
+async def cck(_, m: Message):
+    if len(m.command) < 2:
+        msg = await m.reply_text("¡Por favor, proporciona una tarjeta de crédito!\nEjemplo: /cck 4111111111111111")
+        await sleep(15)
+        await msg.delete()
+    else:
+        try:
+            mafia = await m.reply_text("Procesando...")
+            entrada = m.text.split(None, 1)[1]
+            numero_tarjeta = entrada
+
+            es_valida = validate_credit_card(numero_tarjeta)
+
+            mencion_de = m.from_user.mention
+            mensaje = f"La tarjeta de crédito {numero_tarjeta} es {es_valida}.\n\nVerificado por: {mencion_de}"
+
+            await mafia.edit_text(mensaje)
+        except Exception as e:
+            await m.reply_text(f"¡Ups! Se produjo un error:\n{e}\n\nPor favor, informa este error al propietario del bot.")
 
 print("¡El bot está en línea!")
 
