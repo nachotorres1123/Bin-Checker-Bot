@@ -82,7 +82,7 @@ async def bin(_, m: Message):
             bincode = 6
             ask = inputm[:bincode]
             
-            api_key = "TU_CLAVE_DE_API_AQUI"
+            api_key = "8591782eb8msh35855b7b3e23774p11ee22jsncda4429bc4ec"
             url = "https://lookup.bincheck.io/api/bin"
             headers = {
                 "Accept-Version": "3",
