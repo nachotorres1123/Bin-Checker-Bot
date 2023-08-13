@@ -48,8 +48,18 @@ async def start(_, m: Message):
 @Bot.on_message(filters.command("help"))
 async def help(_, m: Message):
     await m.reply_text(
-        "/start - To check bot alive.\n/help - To see help menu.\n/bin [qoury] - To check Bin is valide or Invalid."
+        "/start - To check bot alive.\n//Pro - Solo Nt Y Admin\n/help - To see help menu.\n/bin [qoury] - To check Bin is valide or Invalid.
+        
+        
+        "
     )
+    
+    
+@Bot.on_message(filters.command("pro"))
+async def pro(_, m: Message):
+    await m.reply_text(
+        "/start - pruebas 1.\n/help - pruebas2.\n/bin [qoury] - nt Pruebas 3 ."
+)
 
 
 @Bot.on_message(filters.command("bin"))
