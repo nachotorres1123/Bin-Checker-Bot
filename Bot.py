@@ -81,27 +81,22 @@ async def bin(_, m: Message):
             inputm = m.text.split(None, 1)[1]
             bincode = 6
             ask = inputm[:bincode]
-
-            # Hacer una solicitud GET a la API de bincheck.io
-            url = f"https://lookup.bincheck.io/bin/{ask}"
-            response = requests.get(url)
-            data = response.json()
-
-            # Analizar los datos JSON devueltos por la API
-            success = data['success']
-            if not success:
-                return await mafia.edit("❌ #INVALID_BIN ❌\n\nPlease provide a valid bin.")
-            card = data['card']
-            country = card['country']
-            brand = card['brand']
-            card_type = card['type']
-            level = card['level']
-            bank = card['bank']
-
-            # Formatear la salida en Markdown
-            mfrom = m.from_user.mention
-            caption = f"""
-    ╔ Valid :- {success} ✅\n╚ Bin :- {ask}\n\n╔ Brand :- {brand}\n╠ Type :- {card_type}\n╚ Level :- {level}\n\n╔ Bank :- {bank} ({country})\n\n↠ Checked By :- {mfrom}\n↠ Bot By :- [Denuwan](https://github.com/ImDenuwan/Bin-Checker-Bot)
+            
+            api_key = "TU_CLAVE_DE_API_AQUI"
+            url = "https://lookup.bincheck.io/api/bin"
+            headers = {
+                "Accept-Version": "3",
+                "Authorization": f"Bearer {api_key}",
+            }
+            payload = {"bin": ask}
+            response = requests.post(url, headers=headers, json=payload)
+            
+            if response.status_code == 200:
+                data = response.json()
+                bank_name = data["bank"]["name"]
+                card_brand = data["scheme"]
+                caption = f"""
+    ╔ Bank Name :- {bank_name}\n╚ Card Brand :- {card_brand}\n\n↠ Checked By :- {m.from_user.mention}\n↠ Bot By :- {mfrom}\n↠ Bot By :- [Denuwan](https://github.com/ImDenuwan/Bin-Checker-Bot)
     """
             await mafia.edit(caption, disable_web_page_preview=True)
             
