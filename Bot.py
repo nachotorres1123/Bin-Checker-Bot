@@ -4,8 +4,8 @@ from configs import config
 from asyncio import sleep
 
 from pyrogram.types import (
-    Message, 
-    InlineKeyboardButton, 
+    Message,
+    InlineKeyboardButton,
     InlineKeyboardMarkup
 )
 
@@ -88,4 +88,10 @@ async def bin(_, m: Message):
             mfrom = m.from_user.mention
 
             caption = f"""
-            ╔ Valid :- Yes ✅\n╚ Bin :- {bi}\n\n╔ Brand :- {ve}\n╠ Type :- {ty}\n╚ Level :- {le}\n\n╔ Bank :- {ban} ({co})\n╠ Country :- {co} {cc}\n╚ DialCode :- {da['phone']}\n\n↠ Checked By :- {str(mfrom)}\n↠ Bot By :- [Denuwan](https://
+            ╔ Valid :- Yes ✅\n╚ Bin :- {bi}\n\n╔ Brand :- {ve}\n╠ Type :- {ty}\n╚ Level :- {le}\n\n╔ Bank :- {ban} ({co})\n╠ Country :- {co} {cc}\n╚ DialCode :- {da['phone']}\n\n↠ Checked By :- {str(mfrom)}\n↠ Bot By :- [Denuwan](https://t.me/Denuwanthi)"
+            """
+            await mafia.edit(caption, parse_mode="markdown")
+
+        except Exception as e:
+            print(str(e))
+            await mafia.edit("❌ #ERROR_OCCURED ❌\n\nSomething went wrong.")
