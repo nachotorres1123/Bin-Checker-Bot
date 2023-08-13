@@ -64,16 +64,8 @@ async def start(_, m: Message):
 @Bot.on_message(filters.command("help"))
 async def help(_, m: Message):
     await m.reply_text(
-        "/start - To check bot alive.\n/Pro - Solo @NtEasyMoney o admin.\n/help - To see help menu.\n/bin [423487] - To check Bin is valide or Invalid."
-    ) 
-
-
-@Bot.on_message(filters.command("admin"))
-async def admin(_, m: Message):
-    await m.reply_text(
-        "/start - To check bot alive.\n/admin - Solo @NtEasyMoney."
+        "/start - To check bot alive.\n/help - To see help menu.\n/bin [qoury] - To check Bin is valide or Invalid."
     )
-
 
 
 @Bot.on_message(filters.command("bin"))
@@ -85,7 +77,7 @@ async def bin(_, m: Message):
 
     else:
         try:
-            mafia = await m.reply_text("buscando tu bin...")
+            mafia = await m.reply_text("processing...")
             inputm = m.text.split(None, 1)[1]
             bincode = 6
             ask = inputm[:bincode]
