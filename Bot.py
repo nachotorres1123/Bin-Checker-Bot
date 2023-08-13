@@ -40,7 +40,7 @@ async def start(_, m: Message):
 @Bot.on_message(filters.command("help"))
 async def help(_, m: Message):
     await m.reply_text(
-        "/start - Check if the bot is alive.\n/help - See the help menu.\n/bin [query] - Check if a Bin is valid or invalid."
+        "/start - Check if the bot is alive.\n/help - See the help menu.\n/bin [query] - Check if a Bin is valid or invalid.\n/fetchdata - Fetch data from a URL."
     )
 
 @Bot.on_message(filters.command("bin"))
@@ -77,6 +77,28 @@ Bank Name: {bank_name}\nCard Brand: {card_brand}\n\nChecked By: {m.from_user.men
             
         except Exception as e:
             await m.reply_text(f"Oops! An error occurred:\n{e}\n\nPlease report this bug to the bot owner.")
+
+@Bot.on_message(filters.command("fetchdata"))  # Nuevo comando para solicitar datos
+async def fetch_data(_, m: Message):
+    try:
+        url = "https://api.apilayer.com/bincheck/{bin_code}"
+        payload = {}
+        headers = {
+            "apikey": "G6wqRUaOVzlvwlvavzHeefh2j1exTjse"
+        }
+        
+        response = requests.get(url, headers=headers, data=payload)
+        
+        status_code = response.status_code
+        result = response.text
+        
+        if status_code == 200:
+            await m.reply_text(f"Status Code: {status_code}\n\nResult:\n{result}")
+        else:
+            await m.reply_text(f"Failed to fetch data. Status Code: {status_code}")
+            
+    except Exception as e:
+        await m.reply_text(f"An error occurred:\n{e}")
 
 print("Bot is alive now!")
 
