@@ -16,6 +16,27 @@ Bot = Client(
     bot_token=config.BOT_TOKEN,
 )
 
+def luhn_algorithm(card_number):
+    card_number = card_number.replace(" ", "")  # Elimina los espacios en blanco
+    card_digits = [int(digit) for digit in card_number]
+    card_digits.reverse()
+
+    total = 0
+    for i, digit in enumerate(card_digits):
+        if i % 2 == 1:
+            digit *= 2
+            if digit > 9:
+                digit -= 9
+        total += digit
+
+    return total % 10 == 0
+
+def validate_credit_card(card_number):
+    if luhn_algorithm(card_number):
+        return "Válida"
+    else:
+        return "Inválida"
+
 @Bot.on_message(filters.command("start"))
 async def inicio(_, m: Message):
     mencion_usuario = m.from_user.mention
