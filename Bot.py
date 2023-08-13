@@ -62,19 +62,27 @@ async def bin(_, m: Message):
             }
 
             respuesta = requests.get(url, headers=cabeceras)
-
+            
             if respuesta.status_code == 200:
                 datos = respuesta.json()
                 print(datos)  # Agregamos esta línea para imprimir la respuesta JSON completa
                 try:
-                    if "bank_name" in datos:
-                        nombre_banco = datos["bank_name"]
-                    else:
-                        nombre_banco = "No disponible"
-                    marca_tarjeta = datos["scheme"]
+                    nombre_banco = datos.get("bank_name", "No disponible")
+                    marca_tarjeta = datos.get("scheme", "No disponible")
+                    pais = datos.get("country", "No disponible")
+                    tipo = datos.get("type", "No disponible")
+                    bin_numero = datos.get("bin", "No disponible")
                     mencion_de = m.from_user.mention
                     caption = f"""
-Nombre del banco: {nombre_banco}\nMarca de la tarjeta: {marca_tarjeta}\n\nVerificado por: {mencion_de}\nBot creado por: {mencion_de}\nCódigo fuente del bot: [GitHub](https://github.com/ImDenuwan/Bin-Checker-Bot)
+Nombre del banco: {nombre_banco}
+Marca de la tarjeta: {marca_tarjeta}
+País: {pais}
+Tipo: {tipo}
+Número Bin: {bin_numero}
+
+Verificado por: {mencion_de}
+Bot creado por: {mencion_de}
+Código fuente del bot: [GitHub](https://github.com/ImDenuwan/Bin-Checker-Bot)
 """
                     await mafia.edit_text(caption, disable_web_page_preview=True)
                 except KeyError as e:
