@@ -65,7 +65,7 @@ async def bin(_, m: Message):
             inputm = m.text.split(None, 1)[1]
             bincode = 6
             ask = inputm[:bincode]
-            req = requests.get(f"https://madbin.herokuapp.com/api/{ask}").json()
+            req = requests.get(f"https://api.bincodes.com/bin/json/0d6542332875d2012b12f3c9d17b8007/{ask}").json()
             res = req["result"]
 
             if res == False:
