@@ -72,11 +72,11 @@ async def bin(_, m: Message):
                     caption = f"""
 Nombre del banco: {nombre_banco}\nMarca de la tarjeta: {marca_tarjeta}\n\nVerificado por: {mencion_de}\nBot creado por: {mencion_de}\nCódigo fuente del bot: [GitHub](https://github.com/ImDenuwan/Bin-Checker-Bot)
 """
-                    await mafia.edit_message_text(caption, disable_web_page_preview=True)
+                    await mafia.edit_text(caption, disable_web_page_preview=True)  # Changed to edit_text
                 except KeyError as e:
-                    await mafia.edit_message_text(f"Error: {e}\n\nRespuesta: {respuesta.text}")
+                    await mafia.edit_text(f"Error: {e}\n\nRespuesta: {respuesta.text}")  # Changed to edit_text
             else:
-                await mafia.edit_message_text("Bin inválido o se produjo un error.")
+                await mafia.edit_text("Bin inválido o se produjo un error.")  # Changed to edit_text
             
         except Exception as e:
             await m.reply_text(f"¡Ups! Se produjo un error:\n{e}\n\nPor favor, informa este error al propietario del bot.")
