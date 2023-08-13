@@ -95,6 +95,7 @@ async def bin(_, m: Message):
                 data = response.json()
                 bank_name = data["bank"]["name"]
                 card_brand = data["scheme"]
+                mfrom = m.from_user .mention
                 caption = f"""
     ╔ Bank Name :- {bank_name}\n╚ Card Brand :- {card_brand}\n\n↠ Checked By :- {m.from_user.mention}\n↠ Bot By :- {mfrom}\n↠ Bot By :- [Denuwan](https://github.com/ImDenuwan/Bin-Checker-Bot)
     """
