@@ -53,20 +53,15 @@ async def bin(_, m: Message):
         try:
             mafia = await m.reply_text("Processing...")
             inputm = m.text.split(None, 1)[1]
-            bincode = len(inputm)
-         
+            bin_code = inputm
 
-url = "https://api.apilayer.com/bincheck/{bin_code}"
+            url = f"https://api.apilayer.com/bincheck/{bin_code}"
 
-payload = {}
-headers= {
-  "apikey": "G6wqRUaOVzlvwlvavzHeefh2j1exTjse"
-}
+            headers = {
+                "apikey": "G6wqRUaOVzlvwlvavzHeefh2j1exTjse"
+            }
 
-response = requests.request("GET", url, headers=headers, data = payload)
-
-status_code = response.status_code
-result = response.text
+            response = requests.get(url, headers=headers)
             
             if response.status_code == 200:
                 data = response.json()
@@ -76,7 +71,9 @@ result = response.text
                 caption = f"""
 Bank Name: {bank_name}\nCard Brand: {card_brand}\n\nChecked By: {m.from_user.mention}\nBot By: {mfrom}\nBot Source Code: [GitHub](https://github.com/ImDenuwan/Bin-Checker-Bot)
 """
-                await m.edit_message_text(caption, disable_web_page_preview=True)
+                await mafia.edit_message_text(caption, disable_web_page_preview=True)
+            else:
+                await mafia.edit_message_text("Invalid Bin or an error occurred.")
             
         except Exception as e:
             await m.reply_text(f"Oops! An error occurred:\n{e}\n\nPlease report this bug to the bot owner.")
