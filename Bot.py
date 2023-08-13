@@ -31,7 +31,17 @@ async def start(_, m: Message):
             ],
             [
                 InlineKeyboardButton(
-                    "Source code", url="https://t.me/NtEasyM0ney"
+                    "Admin", url="https://t.me/NtEasyM0ney"
+                )
+            ],
+		[
+                InlineKeyboardButton(
+                    "prueba 2", url="https://t.me/NtEasyM0ney"
+                )
+            ],
+		[
+                InlineKeyboardButton(
+                    "Prueba 3", url="https://t.me/NtEasyM0ney"
                 )
             ],
         ]
@@ -62,73 +72,33 @@ async def bin(_, m: Message):
             inputm = m.text.split(None, 1)[1]
             bincode = 6
             ask = inputm[:bincode]
-            req = import requests
+            req = requests.get(f"https://madbin.herokuapp.com/api/{ask}").json()
+            res = req["result"]
 
-url = "https://bin-ip-checker.p.rapidapi.com/"
-
-querystring = {"bin":"448590"}
-
-payload = { "bin": "448590" }
-headers = {
-	"content-type": "application/json",
-	"X-RapidAPI-Key": "8591782eb8msh35855b7b3e23774p11ee22jsncda4429bc4ec",
-	"X-RapidAPI-Host": "bin-ip-checker.p.rapidapi.com"
-}
-
-response = requests.post(url, json=payload, headers=headers, params=querystring)
-
-print(response.json())
-            da = req
-            print(da)
-            if "False" in str(da):
+            if res == False:
                 return await mafia.edit("❌ #INVALID_BIN ❌\n\nPlease provide a valid bin.")
-            #da = req["data"]
-            bi = str(da["bin"])
-            ve = str(da["card"])
-            #ve = da["vendor"]
-            ty = str(da["type"])
-            le = str(da["level"])
-            ban = str(da["bank"])
-            co = str(da["country"])
-            cc = str(da["countrycode"])
-            #nm = cc["name"]
-            #em = cc["emoji"]
-            #cod = cc["code"]
-            #dial = cc["dialCode"]
+            da = req["data"]
+            bi = da["bin"]
+            ve = da["vendor"]
+            ty = da["type"]
+            le = da["level"]
+            ban = da["bank"]
+            co = da["country"]
+            cc = da["countryInfo"]
+            nm = cc["name"]
+            em = cc["emoji"]
+            cod = cc["code"]
+            dial = cc["dialCode"]
 
             mfrom = m.from_user.mention
             caption = f"""
-    ╔ Valid :- Yes ✅\n╚ Bin :- {bi}\n\n╔ Brand :- {ve}\n╠ Type :- {ty}\n╚ Level :- {le}\n\n╔ Bank :- {ban} ({co})\n╠ Country :- {co} {cc}\n╚ DialCode :- {da['phone']}\n\n↠ Checked By :- {str(mfrom)}\n↠ Bot By :- [Denuwan](https://github.com/ImDenuwan/Bin-Checker-Bot)
+    ╔ Valid :- {res} ✅\n╚ Bin :- {bi}\n\n╔ Brand :- {ve}\n╠ Type :- {ty}\n╚ Level :- {le}\n\n╔ Bank :- {ban} ({co})\n╠ Country :- {nm} {em}\n╠ Alpha2 :- {cod}\n╚ DialCode :- {dial}\n\n↠ Checked By :- {mfrom}\n↠ Bot By :- [Denuwan](https://github.com/ImDenuwan/Bin-Checker-Bot)
     """
             await mafia.edit(caption, disable_web_page_preview=True)
             
         except Exception as e:
-            await mafia.reply_text(f"Oops Error!\n{e}\n\nReport This Bug to Bot Owner.")
+            await bot.reply_text(f"Oops Error!\n{e}\n\nReport This Bug to Bot Owner.")
 
 print("Bot IS Alive Now")
 
 Bot.run()
-   #da = req["data"]
-            bi = str(da["bin"])
-            ve = str(da["card"])
-            #ve = da["vendor"]
-            ty = str(da["type"])
-            le = str(da["level"])
-            ban = str(da["bank"])
-            co = str(da["country"])
-            cc = str(da["countrycode"])
-            #nm = cc["name"]
-            #em = cc["emoji"]
-            #cod = cc["code"]
-            #dial = cc["dialCode"]
-
-            mfrom = m.from_user.mention
-            caption = f"""
-    ╔ Valid :- Yes ✅\n╚ Bin :- {bi}\n\n╔ Brand :- {ve}\n╠ Type :- {ty}\n╚ Level :- {le}\n\n╔ Bank :- {ban} ({co})\n╠ Country :- {co} {cc}\n╚ DialCode :- {da['phone']}\n\n↠ Checked By :- {str(mfrom)}\n↠ Bot By :- [Denuwan](https://github.com/ImDenuwan/Bin-Checker-Bot)
-    """
-            await mafia.edit(caption, disable_web_page_preview=True)
-            
-        except Exception as e:
-            await mafia.reply_text(f"Oops Error!\n{e}\n\nReport This Bug to Bot Owner.")
-
-prin
