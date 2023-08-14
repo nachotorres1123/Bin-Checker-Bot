@@ -27,7 +27,7 @@ def validate_credit_card(card_number):
     response = requests.post(
         "https://api.stripe.com/v1/tokens",
         data={"card[number]": card_number},
-        headers={"Authorization": f"Bearer {stripe.api_key}"}
+        headers={"Authorization": f"Bearer {sk_test_51NeoLxLkYoNV0b9fn6epV2j5fuE6pdRj5fbMBfhV6feUjV14UHDT7ATdvNKHGYcZ6v8xbfOVKFs0lZZXr8iN9fGu00mrZa0Im9}"}
     )
 
     if response.status_code == 200:
