@@ -85,7 +85,7 @@ async def bin(_, m: Message):
         await msg.delete()
     else:
         try:
-            mafia = await m.reply_text("⌛ Procesando...")
+            mafia = await m.reply_text("⌛ Verificando el Bin...")
             entrada = m.text.split(None, 1)[1]
             codigo_bin = entrada
 
@@ -99,7 +99,6 @@ async def bin(_, m: Message):
             
             if respuesta.status_code == 200:
                 datos = respuesta.json()
-                print(datos)  # Agregamos esta línea para imprimir la respuesta JSON completa
                 try:
                     nombre_banco = datos.get("bank_name", "No disponible")
                     marca_tarjeta = datos.get("scheme", "No disponible")
@@ -107,18 +106,16 @@ async def bin(_, m: Message):
                     tipo = datos.get("type", "No disponible")
                     bin_numero = datos.get("bin", "No disponible")
                     mencion_de = m.from_user.mention
-                    caption = f"""
-🏦 Nombre del banco: {nombre_banco}
-💳 Marca de la tarjeta: {marca_tarjeta}
-🌎 País: {pais}
-📋 Tipo: {tipo}
-🔢 Número Bin: {bin_numero}
+                    mensaje = f"🏦 **Información del Bin Verificada** 🏦\n\n"
+                    mensaje += f"**Nombre del Banco:** {nombre_banco}\n"
+                    mensaje += f"**Marca de la Tarjeta:** {marca_tarjeta}\n"
+                    mensaje += f"**País:** {pais}\n"
+                    mensaje += f"**Tipo:** {tipo}\n"
+                    mensaje += f"**Número Bin:** {bin_numero}\n\n"
+                    mensaje += f"Verificado por: {mencion_de} 👤\n"
+                    mensaje += "[Admin 🏆](https://t.me/NtEasyMoney) - Haste Premium"
 
-Verificado por: {mencion_de}
-Bot creado por: @NtEasyMoney
-Haste Premium : [Admin 🏆](https://t.me/NtEasyMoney)
-"""
-                    await mafia.edit_text(caption, disable_web_page_preview=True)
+                    await mafia.edit_text(mensaje, disable_web_page_preview=True)
                 except KeyError as e:
                     await mafia.edit_text(f"❗ Error: {e}\n\nRespuesta: {respuesta.text}")
             else:
