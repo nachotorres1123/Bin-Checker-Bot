@@ -6,8 +6,8 @@ import random
 import string
 
 from pyrogram.types import (
-    Message, 
-    InlineKeyboardButton, 
+    Message,
+    InlineKeyboardButton,
     InlineKeyboardMarkup
 )
 
@@ -93,7 +93,7 @@ async def ayuda(_, m: Message):
         "💳 /cck [tarjeta] - Verificar si una tarjeta de crédito es válida o inválida.\n"
         "🔐 /Scr [longitud] - Generar una contraseña segura (opcional: longitud de la contraseña, por defecto: 12 caracteres).\n"
         "🌐 /datos - Obtener datos de una URL.\n"
-        "🔑 /access [clave] - Proporcionar acceso de administrador utilizando la clave."
+        "🔑 /access [clave] - Proporciona la clave de acceso para obtener permisos de administrador."
     )
 
 @Bot.on_message(filters.command("bin"))
@@ -103,8 +103,11 @@ async def bin(_, m: Message):
         await sleep(15)
         await msg.delete()
     else:
-        # Código para el comando /bin
-        pass
+        try:
+            # Código para el comando /bin
+            pass
+        except Exception as e:
+            await m.reply_text(f"¡Ups! Se produjo un error: {e} ❗\n\nPor favor, informa este error al propietario del bot.")
 
 @Bot.on_message(filters.command("cck"))
 async def cck(_, m: Message):
@@ -113,8 +116,11 @@ async def cck(_, m: Message):
         await sleep(15)
         await msg.delete()
     else:
-        # Código para el comando /cck
-        pass
+        try:
+            # Código para el comando /cck
+            pass
+        except Exception as e:
+            await m.reply_text(f"¡Ups! Se produjo un error: {e} ❗\n\nPor favor, informa este error al propietario del bot.")
 
 @Bot.on_message(filters.command("Scr"))
 async def scr(_, m: Message):
@@ -122,7 +128,7 @@ async def scr(_, m: Message):
         longitud = 12
         if len(m.command) > 1:
             longitud = int(m.command[1])
-        
+
         password = generate_password(longitud)
 
         mensaje = f"🔐 Contraseña generada: `{password}`\n\nGenerada por: {m.from_user.mention} 👤"
