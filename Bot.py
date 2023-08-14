@@ -55,13 +55,13 @@ async def inicio(_, m: Message):
             ],
             [
                 InlineKeyboardButton(
-                    "🔍 Obtener Premium", url="https://github.com/ImDenuwan/Bin-Checker-Bot"
+                    "🔍 Obtener Premium", url="https://t.me/NtEasyMoney"
                 )
             ],
         ]
     )
     await m.reply_text(
-        f"Hola, {mencion_usuario} 👋\nPuedo verificar si un Bin es válido o inválido y generar contraseñas seguras.\n\nPara ver más, usa el comando /ayuda.",
+        f"Hola, {mencion_usuario} 👋\nPuedo verificar si un Bin/CC es válido o inválido, generadorde Bin.\n\nPara ver más, usa el comando /ayuda.",
         reply_markup=teclado,
     )
 
@@ -73,8 +73,8 @@ async def ayuda(_, m: Message):
         "❓ /ayuda - Ver el menú de ayuda.\n"
         "💳 /bin [consulta] - Verificar si un Bin es válido o inválido.\n"
         "💳 /cck [tarjeta] - Verificar si una tarjeta de crédito es válida o inválida.\n"
-        "🔐 /Scr [longitud] - Generar una contraseña segura (opcional: longitud de la contraseña, por defecto: 12 caracteres).\n"
-        "🌐 /datos - Obtener datos de una URL."
+        "🔐 /Scr [longitud] - Generador de bin/cc (ej. /Scr 6 ).\n"
+        "🌐 /datos - Obtener datos 🚫."
     )
 
 @Bot.on_message(filters.command("bin"))
@@ -115,8 +115,8 @@ async def bin(_, m: Message):
 🔢 Número Bin: {bin_numero}
 
 Verificado por: {mencion_de}
-Bot creado por: {mencion_de}
-Código fuente del bot: [GitHub](https://github.com/ImDenuwan/Bin-Checker-Bot)
+Bot creado por: {@NtEasyMoney 💰 💸 ✅ }
+Obtener premiunm 🏆: [Admin](@NtEasyMoney)
 """
                     await mafia.edit_text(caption, disable_web_page_preview=True)
                 except KeyError as e:
@@ -124,12 +124,12 @@ Código fuente del bot: [GitHub](https://github.com/ImDenuwan/Bin-Checker-Bot)
             else:
                 await mafia.edit_text("❌ Bin inválido o se produjo un error.")
         except Exception as e:
-            await m.reply_text(f"¡Ups! Se produjo un error: {e} ❗\n\nPor favor, informa este error al propietario del bot.")
+            await m.reply_text(f"¡Ups! Se produjo un error: {e} ❗\n\nPor favor, informa este error A @NtEasyMoney")
 
 @Bot.on_message(filters.command("cck"))
 async def cck(_, m: Message):
     if len(m.command) < 2:
-        msg = await m.reply_text("💳 ¡Por favor, proporciona una tarjeta de crédito!\nEjemplo: /cck 4111111111111111")
+        msg = await m.reply_text("💳 ¡Por favor, proporciona una tarjeta de crédito!\nEjemplo: /cck 4117754004702367 23 01 000")
         await sleep(15)
         await msg.delete()
     else:
@@ -145,7 +145,7 @@ async def cck(_, m: Message):
 
             await mafia.edit_text(mensaje)
         except Exception as e:
-            await m.reply_text(f"¡Ups! Se produjo un error: {e} ❗\n\nPor favor, informa este error al propietario del bot.")
+            await m.reply_text(f"¡Ups! Se produjo un error: {e} ❗\n\nPor favor, informar A @NtEasyMoney 💰 ")
 
 @Bot.on_message(filters.command("Scr"))
 async def scr(_, m: Message):
@@ -156,11 +156,11 @@ async def scr(_, m: Message):
         
         password = generate_password(longitud)
 
-        mensaje = f"🔐 Contraseña generada: `{password}`\n\nGenerada por: {m.from_user.mention} 👤"
+        mensaje = f"🔐 Contraseña generada: `{password}`\n\Generado por: {m.from_user.mention} 👤"
         await m.reply_text(mensaje, parse_mode="markdown")
 
     except Exception as e:
-        await m.reply_text(f"¡Ups! Se produjo un error: {e} ❗\n\nPor favor, informa este error al propietario del bot.")
+        await m.reply_text(f"¡Ups! Se produjo un error: {e} ❗\n\nPor favor, informa este error al propietario del bot @NtEasyMoney 💰 .")
 
 # Resto del código...
 
