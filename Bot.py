@@ -1,4 +1,3 @@
-import requests
 import subprocess
 import sys
 from pyrogram import Client, filters
@@ -10,11 +9,10 @@ from pyrogram.types import (
     InlineKeyboardButton, 
     InlineKeyboardMarkup
 )
+import stripe
 
 # Instalar o actualizar la biblioteca de Stripe
 subprocess.check_call([sys.executable, "-m", "pip", "install", "--upgrade", "stripe"])
-
-import stripe
 
 Bot = Client(
     ":memory:",
@@ -23,45 +21,21 @@ Bot = Client(
     bot_token=config.BOT_TOKEN,
 )
 
-def validate_credit_card(card_number):
-    response = requests.post(
-        "https://api.stripe.com/v1/tokens",
-        data={"card[number]": card_number},
-        headers={"Authorization": f"Bearer {sk_test_51NeoLxLkYoNV0b9fn6epV2j5fuE6pdRj5fbMBfhV6feUjV14UHDT7ATdvNKHGYcZ6v8xbfOVKFs0lZZXr8iN9fGu00mrZa0Im9}"}
-    )
+# Configura tu clave secreta de Stripe
+stripe.api_key = "sk_test_51NeoLxLkYoNV0b9fn6epV2j5fuE6pdRj5fbMBfhV6feUjV14UHDT7ATdvNKHGYcZ6v8xbfOVKFs0lZZXr8iN9fGu00mrZa0Im9"
 
-    if response.status_code == 200:
-        token = response.json()
+def validate_credit_card(card_number):
+    try:
+        response = stripe.Token.create(
+            card={
+                "number": card_number,
+            }
+        )
         return "Válida"
-    else:
+    except stripe.error.CardError as e:
         return "Inválida"
 
-@Bot.on_message(filters.command("start"))
-async def inicio(_, m: Message):
-    mencion_usuario = m.from_user.mention
-    teclado = InlineKeyboardMarkup(
-        [
-            [
-                InlineKeyboardButton("Canal", url="https://t.me/NtEasyM0ney"),
-                InlineKeyboardButton("Soporte", url="https://t.me/NtEasyMoney"),
-            ],
-            [
-                InlineKeyboardButton(
-                    "Código fuente", url="https://github.com/ImDenuwan/Bin-Checker-Bot"
-                )
-            ],
-        ]
-    )
-    await m.reply_text(
-        f"Hola, {mencion_usuario}\nPuedo verificar si una tarjeta de crédito es válida o inválida.\n\nPara ver más, usa el comando /ayuda.",
-        reply_markup=teclado,
-    )
-
-@Bot.on_message(filters.command("ayuda"))
-async def ayuda(_, m: Message):
-    await m.reply_text(
-        "/inicio - Verificar si el bot está activo.\n/ayuda - Ver el menú de ayuda.\n/cck [tarjeta] - Verificar si una tarjeta de crédito es válida o inválida.\n/datos - Obtener datos de una URL."
-    )
+# ... Resto del código ...
 
 @Bot.on_message(filters.command("cck"))
 async def cck(_, m: Message):
