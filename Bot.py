@@ -79,8 +79,52 @@ async def ayuda(_, m: Message):
 
 @Bot.on_message(filters.command("bin"))
 async def bin(_, m: Message):
-    # Agregar la lógica para manejar el comando /bin aquí
-    pass
+    if len(m.command) < 2:
+        msg = await m.reply_text("📝 ¡Por favor, proporciona un Bin!\nEjemplo: /bin 401658")
+        await sleep(15)
+        await msg.delete()
+    else:
+        try:
+            mafia = await m.reply_text("⌛ Procesando...")
+            entrada = m.text.split(None, 1)[1]
+            codigo_bin = entrada
+
+            url = f"https://api.apilayer.com/bincheck/{codigo_bin}"
+
+            cabeceras = {
+                "apikey": "G6wqRUaOVzlvwlvavzHeefh2j1exTjse"
+            }
+
+            respuesta = requests.get(url, headers=cabeceras)
+            
+            if respuesta.status_code == 200:
+                datos = respuesta.json()
+                print(datos)  # Agregamos esta línea para imprimir la respuesta JSON completa
+                try:
+                    nombre_banco = datos.get("bank_name", "No disponible")
+                    marca_tarjeta = datos.get("scheme", "No disponible")
+                    pais = datos.get("country", "No disponible")
+                    tipo = datos.get("type", "No disponible")
+                    bin_numero = datos.get("bin", "No disponible")
+                    mencion_de = m.from_user.mention
+                    caption = f"""
+🏦 Nombre del banco: {nombre_banco}
+💳 Marca de la tarjeta: {marca_tarjeta}
+🌎 País: {pais}
+📋 Tipo: {tipo}
+🔢 Número Bin: {bin_numero}
+
+Verificado por: {mencion_de}
+Bot creado por: @NtEasyMoney
+Haste Premium : [Admin 🏆](https://t.me/NtEasyMoney)
+"""
+                    await mafia.edit_text(caption, disable_web_page_preview=True)
+                except KeyError as e:
+                    await mafia.edit_text(f"❗ Error: {e}\n\nRespuesta: {respuesta.text}")
+            else:
+                await mafia.edit_text("❌ Bin inválido o se produjo un error.")
+        except Exception as e:
+            await m.reply_text(f"¡Ups! Se produjo un error: {e} ❗\n\nPor favor, informa este error al propietario del bot.")
 
 @Bot.on_message(filters.command("cck"))
 async def cck(_, m: Message):
