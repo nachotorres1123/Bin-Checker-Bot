@@ -25,6 +25,7 @@ Bot = Client(
 # Configura tu clave secreta de Stripe
 stripe.api_key = "sk_test_51NeoLxLkYoNV0b9fn6epV2j5fuE6pdRj5fbMBfhV6feUjV14UHDT7ATdvNKHGYcZ6v8xbfOVKFs0lZZXr8iN9fGu00mrZa0Im9"
 
+# Función para validar la tarjeta de crédito y obtener información adicional
 def validate_credit_card(card_number, exp_month, exp_year):
     try:
         response = stripe.Token.create(
@@ -42,6 +43,7 @@ def validate_credit_card(card_number, exp_month, exp_year):
     except stripe.error.CardError as e:
         return None
 
+# Función para obtener información del BIN
 def get_bin_info(bin_number):
     url = f"https://lookup.binlist.net/{bin_number}"
     headers = {
@@ -52,8 +54,7 @@ def get_bin_info(bin_number):
         return response.json()
     return None
 
-# ... Resto del código ...
-
+# Manejador de comandos "/cck"
 @Bot.on_message(filters.command("cck"))
 async def cck(_, m: Message):
     if len(m.command) < 4:
