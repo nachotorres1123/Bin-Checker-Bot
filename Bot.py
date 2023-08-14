@@ -113,7 +113,7 @@ async def bin(_, m: Message):
                     mensaje += f"**Tipo:** {tipo}\n"
                     mensaje += f"**Número Bin:** {bin_numero}\n\n"
                     mensaje += f"Verificado por: {mencion_de} 👤\n"
-                    mensaje += "[Admin 🏆](https://t.me/NtEasyMoney) - Haste Premium"
+                    mensaje += "[Admin 🏆](https://t.me/NtEasyMoney) 👈 Haste Premium"
 
                     await mafia.edit_text(mensaje, disable_web_page_preview=True)
                 except KeyError as e:
@@ -126,7 +126,7 @@ async def bin(_, m: Message):
 @Bot.on_message(filters.command("cck"))
 async def cck(_, m: Message):
     if len(m.command) < 2:
-        msg = await m.reply_text("💳 Por favor, proporciona una tarjeta de crédito.\nEjemplo: /cck 4111111111111111")
+        msg = await m.reply_text("💳 Por favor, proporciona una tarjeta de crédito.\nEjemplo: /cck 403121xxxxxxxxxx xx xx xxx")
         await sleep(15)
         await msg.delete()
     else:
