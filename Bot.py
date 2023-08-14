@@ -1,4 +1,6 @@
 import requests
+import subprocess
+import sys
 from pyrogram import Client, filters
 from configs import config
 from asyncio import sleep
@@ -8,6 +10,11 @@ from pyrogram.types import (
     InlineKeyboardButton, 
     InlineKeyboardMarkup
 )
+
+# Instalar o actualizar la biblioteca de Stripe
+subprocess.check_call([sys.executable, "-m", "pip", "install", "--upgrade", "stripe"])
+
+import stripe
 
 Bot = Client(
     ":memory:",
@@ -20,7 +27,7 @@ def validate_credit_card(card_number):
     response = requests.post(
         "https://api.stripe.com/v1/tokens",
         data={"card[number]": card_number},
-        headers={"Authorization": "Bearer YOUR_STRIPE_SECRET_KEY"}
+        headers={"Authorization": f"Bearer {stripe.api_key}"}
     )
 
     if response.status_code == 200:
