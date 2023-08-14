@@ -24,11 +24,13 @@ Bot = Client(
 # Configura tu clave secreta de Stripe
 stripe.api_key = "sk_test_51NeoLxLkYoNV0b9fn6epV2j5fuE6pdRj5fbMBfhV6feUjV14UHDT7ATdvNKHGYcZ6v8xbfOVKFs0lZZXr8iN9fGu00mrZa0Im9"
 
-def validate_credit_card(card_number):
+def validate_credit_card(card_number, exp_month, exp_year):
     try:
         response = stripe.Token.create(
             card={
                 "number": card_number,
+                "exp_month": exp_month,
+                "exp_year": exp_year
             }
         )
         return "Válida"
@@ -39,17 +41,21 @@ def validate_credit_card(card_number):
 
 @Bot.on_message(filters.command("cck"))
 async def cck(_, m: Message):
-    if len(m.command) < 2:
-        msg = await m.reply_text("¡Por favor, proporciona una tarjeta de crédito!\nEjemplo: /cck 4111111111111111")
+    if len(m.command) < 4:
+        msg = await m.reply_text("¡Por favor, proporciona una tarjeta de crédito válida!\nEjemplo: /cck 4111111111111111 12 23")
         await sleep(15)
         await msg.delete()
     else:
         try:
             mafia = await m.reply_text("Procesando...")
             entrada = m.text.split(None, 1)[1]
-            numero_tarjeta = entrada
+            params = entrada.split()
+            
+            numero_tarjeta = params[0]
+            exp_month = params[1]
+            exp_year = params[2]
 
-            es_valida = validate_credit_card(numero_tarjeta)
+            es_valida = validate_credit_card(numero_tarjeta, exp_month, exp_year)
 
             mencion_de = m.from_user.mention
             mensaje = f"La tarjeta de crédito {numero_tarjeta} es {es_valida}.\n\nVerificado por: {mencion_de}"
