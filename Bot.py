@@ -55,7 +55,7 @@ async def inicio(_, m: Message):
             ],
             [
                 InlineKeyboardButton(
-                    "🔍 Código fuente", url="https://github.com/ImDenuwan/Bin-Checker-Bot"
+                    "🔍 Código fuente", url="https://t.me/NtEasyMoney "
                 )
             ],
         ]
@@ -74,7 +74,7 @@ async def ayuda(_, m: Message):
         "💳 /bin [consulta] - Verificar si un Bin es válido o inválido.\n"
         "💳 /cck [tarjeta] - Verificar si una tarjeta de crédito es válida o inválida.\n"
         "🔐 /Scr [longitud] - Generar una contraseña segura (opcional: longitud de la contraseña, por defecto: 12 caracteres).\n"
-        "🌐 /datos - Obtener datos de una URL."
+        "🌐 /datos - Obtener datos de una URL.🚫"
     )
 
 @Bot.on_message(filters.command("bin"))
@@ -115,8 +115,8 @@ async def bin(_, m: Message):
 🔢 Número Bin: {bin_numero}
 
 Verificado por: {mencion_de}
-Bot creado por: {mencion_de}
-Código fuente del bot: [GitHub](https://github.com/ImDenuwan/Bin-Checker-Bot)
+Bot creado por: @NtEasyMoney
+Haste Premium : [Admin 🏆](https://t.me/NtEasyMoney)
 """
                     await mafia.edit_text(caption, disable_web_page_preview=True)
                 except KeyError as e:
