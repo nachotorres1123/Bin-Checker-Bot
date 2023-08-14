@@ -73,11 +73,11 @@ async def ayuda(_, m: Message):
         "❓ /ayuda - Ver el menú de ayuda.\n"
         "💳 /bin [consulta] - Verificar si un Bin es válido o inválido.\n"
         "💳 /cck [tarjeta] - Verificar si una tarjeta de crédito es válida o inválida.\n"
-        "🔐 /Scr [longitud] - Generar una contraseña segura (opcional: longitud de la contraseña, por defecto: 12 caracteres).\n"
+        "🔐 /generarpass [longitud] - Generar una contraseña segura (opcional: longitud de la contraseña, por defecto: 12 caracteres).\n"
         "🌐 /datos - Obtener datos de una URL."
     )
 
-@Bot.on_message(filters.command("Scr"))
+@Bot.on_message(filters.command("generarpass"))
 async def generarpass(_, m: Message):
     try:
         if len(m.command) < 2:
