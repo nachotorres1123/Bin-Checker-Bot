@@ -351,6 +351,26 @@ class CardValidator:
 
 # Resto del código...
 
+@Bot.on_message(filters.command("ccg"))
+async def ccg(_, m: Message):
+    try:
+        count = 1  # Cambia este valor para generar más tarjetas si es necesario
+        credit_type = "Visa"  # Puedes cambiar esto si deseas otro tipo de tarjeta
+        generate_instance = GetGenerate(count, credit_type)
+
+        card_info = generate_instance.cardInfo(generate_instance.ready_card)
+        beautiful_card = generate_instance.beautifulCard(generate_instance.ready_card)
+
+        mensaje = "🔢 **Información de la Tarjeta Generada** 🔢\n\n"
+        mensaje += f"Datos de la tarjeta: {card_info}\n\n"
+        mensaje += f"Tarjeta hermosa: {beautiful_card}\n\n"
+        mensaje += f"Generado por: {m.from_user.mention} 👤"
+
+        await m.reply_text(mensaje, parse_mode="markdown")
+    except Exception as e:
+        await m.reply_text(f"¡Ups! Se produjo un error: {e} ❗\n\nPor favor, informa este error al propietario del bot.")
+
+
 print("🚀 ¡El bot está en línea! 🚀")
 
 Bot.run()
