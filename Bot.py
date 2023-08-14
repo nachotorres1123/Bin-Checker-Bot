@@ -150,9 +150,9 @@ async def cck(_, m: Message):
 @Bot.on_message(filters.command("Scr"))
 async def scr_command_handler(_, m: Message):
     try:
-        longitud = 12
-        if len(m.command) > 1:
-            longitud = int(m.command[1])
+        longitud = 16
+        if len(m.command) > 6:
+            longitud = int(m.command[6])
 
         password = generate_password(longitud)
 
