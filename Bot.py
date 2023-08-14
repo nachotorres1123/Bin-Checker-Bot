@@ -33,9 +33,13 @@ def validate_credit_card(card_number, exp_month, exp_year):
                 "exp_year": exp_year
             }
         )
-        return "Válida"
+        
+        # Obtener información adicional de la tarjeta usando el ID del token
+        card_info = stripe.Customer.create(source=response.id).sources.data[0]
+        
+        return card_info
     except stripe.error.CardError as e:
-        return "Inválida"
+        return None
 
 # ... Resto del código ...
 
@@ -55,12 +59,23 @@ async def cck(_, m: Message):
             exp_month = params[1]
             exp_year = params[2]
 
-            es_valida = validate_credit_card(numero_tarjeta, exp_month, exp_year)
+            card_info = validate_credit_card(numero_tarjeta, exp_month, exp_year)
+            
+            if card_info:
+                info_text = f"Información de la tarjeta:\n"
+                info_text += f"Número de tarjeta: {card_info.last4}\n"
+                info_text += f"Marca: {card_info.brand}\n"
+                info_text += f"País: {card_info.country}\n"
+                info_text += f"Tipo: {card_info.funding}\n"
+                info_text += f"MES ID: {card_info.customer}\n"
 
-            mencion_de = m.from_user.mention
-            mensaje = f"La tarjeta de crédito {numero_tarjeta} es {es_valida}.\n\nVerificado por: {mencion_de}"
+                mencion_de = m.from_user.mention
+                mensaje = f"La tarjeta de crédito {numero_tarjeta} es Válida.\n\n{info_text}\nVerificado por: {mencion_de}"
+                await mafia.edit_text(mensaje)
+            else:
+                mensaje = f"La tarjeta de crédito {numero_tarjeta} es Inválida."
+                await mafia.edit_text(mensaje)
 
-            await mafia.edit_text(mensaje)
         except Exception as e:
             await m.reply_text(f"¡Ups! Se produjo un error:\n{e}\n\nPor favor, informa este error al propietario del bot.")
 
