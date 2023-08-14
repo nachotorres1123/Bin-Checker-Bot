@@ -148,19 +148,26 @@ async def cck(_, m: Message):
             await m.reply_text(f"¡Ups! Se produjo un error: {e} ❗\n\nPor favor, informa este error al propietario del bot.")
 
 @Bot.on_message(filters.command("Scr"))
-async def scr(_, m: Message):
+async def scr_command_handler(_, m: Message):
     try:
         longitud = 12
         if len(m.command) > 1:
             longitud = int(m.command[1])
-        
+
         password = generate_password(longitud)
 
-        mensaje = f"🔐 Contraseña generada: `{password}`\n\nGenerada por: {m.from_user.mention} 👤"
+        mensaje = f"🔐 **Contraseña Generada** 🔐\n\n"
+        mensaje += f"Contraseña: `{password}`\n\n"
+        mensaje += f"Generada por: {m.from_user.mention} 👤"
+
         await m.reply_text(mensaje, parse_mode="markdown")
 
     except Exception as e:
-        await m.reply_text(f"¡Ups! Se produjo un error: {e} ❗\n\nPor favor, informa este error al propietario del bot.")
+        error_message = "¡Ups! Se produjo un error al generar la contraseña. 😓\n\n"
+        error_message += f"Error: {e} ❗\n\n"
+        error_message += "Por favor, informa este error al propietario del bot."
+        await m.reply_text(error_message)
+
 
 # Resto del código...
 
