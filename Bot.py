@@ -1,19 +1,13 @@
-import subprocess
-import sys
+import requests
 from pyrogram import Client, filters
 from configs import config
 from asyncio import sleep
-import requests
 
 from pyrogram.types import (
     Message, 
     InlineKeyboardButton, 
     InlineKeyboardMarkup
 )
-import stripe
-
-# Instalar o actualizar la biblioteca de Stripe
-subprocess.check_call([sys.executable, "-m", "pip", "install", "--upgrade", "stripe"])
 
 Bot = Client(
     ":memory:",
@@ -22,78 +16,121 @@ Bot = Client(
     bot_token=config.BOT_TOKEN,
 )
 
-# Configura tu clave secreta de Stripe
-stripe.api_key = "sk_test_51NeoLxLkYoNV0b9fn6epV2j5fuE6pdRj5fbMBfhV6feUjV14UHDT7ATdvNKHGYcZ6v8xbfOVKFs0lZZXr8iN9fGu00mrZa0Im9"
+def luhn_algorithm(card_number):
+    card_number = card_number.replace(" ", "")  # Elimina los espacios en blanco
+    card_digits = [int(digit) for digit in card_number]
+    card_digits.reverse()
 
-# Función para validar la tarjeta de crédito y obtener información adicional
-def validate_credit_card(card_number, exp_month, exp_year):
-    try:
-        response = stripe.Token.create(
-            card={
-                "number": card_number,
-                "exp_month": exp_month,
-                "exp_year": exp_year
-            }
-        )
-        
-        # Obtener información adicional de la tarjeta usando el ID del token
-        card_info = stripe.Customer.create(source=response.id).sources.data[0]
-        
-        return card_info
-    except stripe.error.CardError as e:
-        return None
+    total = 0
+    for i, digit in enumerate(card_digits):
+        if i % 2 == 1:
+            digit *= 2
+            if digit > 9:
+                digit -= 9
+        total += digit
 
-# Función para obtener información del BIN
-def get_bin_info(bin_number):
-    url = f"https://lookup.binlist.net/{bin_number}"
-    headers = {
-        "Accept-Version": "3"
-    }
-    response = requests.get(url, headers=headers)
-    if response.status_code == 200:
-        return response.json()
-    return None
+    return total % 10 == 0
 
-# Manejador de comandos "/cck"
-@Bot.on_message(filters.command("cck"))
-async def cck(_, m: Message):
-    if len(m.command) < 4:
-        msg = await m.reply_text("¡Por favor, proporciona una tarjeta de crédito válida!\nEjemplo: /cck 4111111111111111 12 23")
+def validate_credit_card(card_number):
+    if luhn_algorithm(card_number):
+        return "Válida"
+    else:
+        return "Inválida"
+
+@Bot.on_message(filters.command("start"))
+async def inicio(_, m: Message):
+    mencion_usuario = m.from_user.mention
+    teclado = InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton("Canal", url="https://t.me/NtEasyM0ney"),
+                InlineKeyboardButton("Soporte", url="https://t.me/NtEasyMoney"),
+            ],
+            [
+                InlineKeyboardButton(
+                    "Código fuente", url="https://github.com/ImDenuwan/Bin-Checker-Bot"
+                )
+            ],
+        ]
+    )
+    await m.reply_text(
+        f"Hola, {mencion_usuario}\nPuedo verificar si un Bin es válido o inválido.\n\nPara ver más, usa el comando /ayuda.",
+        reply_markup=teclado,
+    )
+
+@Bot.on_message(filters.command("ayuda"))
+async def ayuda(_, m: Message):
+    await m.reply_text(
+        "/inicio - Verificar si el bot está activo.\n/ayuda - Ver el menú de ayuda.\n/bin [consulta] - Verificar si un Bin es válido o inválido.\n/cck [tarjeta] - Verificar si una tarjeta de crédito es válida o inválida.\n/datos - Obtener datos de una URL."
+    )
+
+@Bot.on_message(filters.command("bin"))
+async def bin(_, m: Message):
+    if len(m.command) < 2:
+        msg = await m.reply_text("¡Por favor, proporciona un Bin!\nEjemplo: /bin 401658")
         await sleep(15)
         await msg.delete()
     else:
         try:
             mafia = await m.reply_text("Procesando...")
             entrada = m.text.split(None, 1)[1]
-            params = entrada.split()
-            
-            numero_tarjeta = params[0]
-            exp_month = params[1]
-            exp_year = params[2]
+            codigo_bin = entrada
 
-            card_info = validate_credit_card(numero_tarjeta, exp_month, exp_year)
-            bin_info = get_bin_info(numero_tarjeta[:6])
-            
-            if card_info:
-                info_text = f"Información de la tarjeta:\n"
-                info_text += f"Número de tarjeta: {card_info.last4}\n"
-                info_text += f"Marca: {card_info.brand}\n"
-                info_text += f"País: {card_info.country}\n"
-                info_text += f"Tipo: {card_info.funding}\n"
-                
-                if bin_info:
-                    info_text += f"Nombre del banco: {bin_info.get('bank', {}).get('name', 'Desconocido')}\n"
-                    info_text += f"Tipo de tarjeta: {bin_info.get('type', 'Desconocido')}\n"
-                
-                info_text += f"Número Bin: {numero_tarjeta[:6]}\n"
+            url = f"https://api.apilayer.com/bincheck/{codigo_bin}"
 
-                mencion_de = m.from_user.mention
-                mensaje = f"La tarjeta de crédito {numero_tarjeta} es Válida.\n\n{info_text}\nVerificado por: {mencion_de}\nBot creado por: {mencion_de}\nCódigo fuente del bot: [GitHub](https://github.com/ImDenuwan/Bin-Checker-Bot)"
-                await mafia.edit_text(mensaje)
+            cabeceras = {
+                "apikey": "G6wqRUaOVzlvwlvavzHeefh2j1exTjse"
+            }
+
+            respuesta = requests.get(url, headers=cabeceras)
+            
+            if respuesta.status_code == 200:
+                datos = respuesta.json()
+                print(datos)  # Agregamos esta línea para imprimir la respuesta JSON completa
+                try:
+                    nombre_banco = datos.get("bank_name", "No disponible")
+                    marca_tarjeta = datos.get("scheme", "No disponible")
+                    pais = datos.get("country", "No disponible")
+                    tipo = datos.get("type", "No disponible")
+                    bin_numero = datos.get("bin", "No disponible")
+                    mencion_de = m.from_user.mention
+                    caption = f"""
+Nombre del banco: {nombre_banco}
+Marca de la tarjeta: {marca_tarjeta}
+País: {pais}
+Tipo: {tipo}
+Número Bin: {bin_numero}
+
+Verificado por: {mencion_de}
+Bot creado por: {mencion_de}
+Código fuente del bot: [GitHub](https://github.com/ImDenuwan/Bin-Checker-Bot)
+"""
+                    await mafia.edit_text(caption, disable_web_page_preview=True)
+                except KeyError as e:
+                    await mafia.edit_text(f"Error: {e}\n\nRespuesta: {respuesta.text}")
             else:
-                mensaje = f"La tarjeta de crédito {numero_tarjeta} es Inválida."
-                await mafia.edit_text(mensaje)
+                await mafia.edit_text("Bin inválido o se produjo un error.")
+        except Exception as e:
+            await m.reply_text(f"¡Ups! Se produjo un error:\n{e}\n\nPor favor, informa este error al propietario del bot.")
 
+@Bot.on_message(filters.command("cck"))
+async def cck(_, m: Message):
+    if len(m.command) < 2:
+        msg = await m.reply_text("¡Por favor, proporciona una tarjeta de crédito!\nEjemplo: /cck 4111111111111111")
+        await sleep(15)
+        await msg.delete()
+    else:
+        try:
+            mafia = await m.reply_text("Procesando...")
+            entrada = m.text.split(None, 1)[1]
+            numero_tarjeta = entrada
+
+            es_valida = validate_credit_card(numero_tarjeta)
+
+            mencion_de = m.from_user.mention
+            mensaje = f"La tarjeta de crédito {numero_tarjeta} es {es_valida}.\n\nVerificado por: {mencion_de}"
+
+            await mafia.edit_text(mensaje)
         except Exception as e:
             await m.reply_text(f"¡Ups! Se produjo un error:\n{e}\n\nPor favor, informa este error al propietario del bot.")
 
