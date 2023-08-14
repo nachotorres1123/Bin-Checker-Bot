@@ -237,18 +237,18 @@ class GetGenerate:
                             self.ready_card.update(json_value)
                             break
 
-        else:
-            for x in range(self.count):
-                card_id = random.choice(self.jdata[self.credit_type.lower()])
-                if self.credit_type.lower() == "amex":
-                    card_id = random.choice(self.jdata['amex'])
-                    while 1:
-                        card_number = f"{card_id}{random.randint(1111111111111, 9999999999999)}"
-                        if CardValidator(card_number).luhnValidator():
-                            data_value = int(datetime.now().strftime("%y")) + random.randint(2, 6)
-                            json_value = {x: {"card": f"{card_number}",
-                                              "data": f"0{random.randint(1, 10)}/{data_value}",
-                                              "csv": random.randint(111, 9999)}}
+            if beautiful_card:
+                self.beautiful_card = GetGenerate().beautifulCard(self.ready_card)
+            if bank_info:
+                jsonInfoBank = {}
+                for card_id in self.ready_card:
+                    ready_info = CardValidator(self.ready_card[card_id]['card']).cardInfo()
+                    jsonInfoBank.update({card_id: {"value": self.ready_card[card_id], "info": ready_info}})
+                self.ready_card = jsonInfoBank
+
+            return self.ready_card
+
+# Resto del código...
 
 class CardValidator:
     def __init__(self, card_number):
