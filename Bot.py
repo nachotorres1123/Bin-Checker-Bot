@@ -43,12 +43,12 @@ async def inicio(_, m: Message):
     teclado = InlineKeyboardMarkup(
         [
             [
-                InlineKeyboardButton("Canal 📢", url="https://t.me/NtEasyM0ney"),
-                InlineKeyboardButton("Soporte 💬", url="https://t.me/NtEasyMoney"),
+                InlineKeyboardButton("📢 Canal", url="https://t.me/NtEasyM0ney"),
+                InlineKeyboardButton("💬 Soporte", url="https://t.me/NtEasyMoney"),
             ],
             [
                 InlineKeyboardButton(
-                    "Código fuente 🔍", url="https://github.com/ImDenuwan/Bin-Checker-Bot"
+                    "🔍 Código fuente", url="https://github.com/ImDenuwan/Bin-Checker-Bot"
                 )
             ],
         ]
@@ -61,18 +61,23 @@ async def inicio(_, m: Message):
 @Bot.on_message(filters.command("ayuda"))
 async def ayuda(_, m: Message):
     await m.reply_text(
-        "/inicio - Verificar si el bot está activo.\n/ayuda - Ver el menú de ayuda.\n/bin [consulta] - Verificar si un Bin es válido o inválido.\n/cck [tarjeta] - Verificar si una tarjeta de crédito es válida o inválida.\n/datos - Obtener datos de una URL."
+        "📚 **Menú de ayuda** 📚\n\n"
+        "🏠 /inicio - Verificar si el bot está activo.\n"
+        "❓ /ayuda - Ver el menú de ayuda.\n"
+        "💳 /bin [consulta] - Verificar si un Bin es válido o inválido.\n"
+        "💳 /cck [tarjeta] - Verificar si una tarjeta de crédito es válida o inválida.\n"
+        "🌐 /datos - Obtener datos de una URL."
     )
 
 @Bot.on_message(filters.command("bin"))
 async def bin(_, m: Message):
     if len(m.command) < 2:
-        msg = await m.reply_text("¡Por favor, proporciona un Bin! 📝\nEjemplo: /bin 401658")
+        msg = await m.reply_text("📝 ¡Por favor, proporciona un Bin!\nEjemplo: /bin 401658")
         await sleep(15)
         await msg.delete()
     else:
         try:
-            mafia = await m.reply_text("Procesando... ⌛")
+            mafia = await m.reply_text("⌛ Procesando...")
             entrada = m.text.split(None, 1)[1]
             codigo_bin = entrada
 
@@ -95,11 +100,11 @@ async def bin(_, m: Message):
                     bin_numero = datos.get("bin", "No disponible")
                     mencion_de = m.from_user.mention
                     caption = f"""
-Nombre del banco: {nombre_banco}
-Marca de la tarjeta: {marca_tarjeta}
-País: {pais}
-Tipo: {tipo}
-Número Bin: {bin_numero}
+🏦 Nombre del banco: {nombre_banco}
+💳 Marca de la tarjeta: {marca_tarjeta}
+🌎 País: {pais}
+📋 Tipo: {tipo}
+🔢 Número Bin: {bin_numero}
 
 Verificado por: {mencion_de}
 Bot creado por: {mencion_de}
@@ -107,21 +112,21 @@ Código fuente del bot: [GitHub](https://github.com/ImDenuwan/Bin-Checker-Bot)
 """
                     await mafia.edit_text(caption, disable_web_page_preview=True)
                 except KeyError as e:
-                    await mafia.edit_text(f"Error: {e} ❗\n\nRespuesta: {respuesta.text}")
+                    await mafia.edit_text(f"❗ Error: {e}\n\nRespuesta: {respuesta.text}")
             else:
-                await mafia.edit_text("Bin inválido o se produjo un error. ❌")
+                await mafia.edit_text("❌ Bin inválido o se produjo un error.")
         except Exception as e:
             await m.reply_text(f"¡Ups! Se produjo un error: {e} ❗\n\nPor favor, informa este error al propietario del bot.")
 
 @Bot.on_message(filters.command("cck"))
 async def cck(_, m: Message):
     if len(m.command) < 2:
-        msg = await m.reply_text("¡Por favor, proporciona una tarjeta de crédito! 💳\nEjemplo: /cck 4111111111111111")
+        msg = await m.reply_text("💳 ¡Por favor, proporciona una tarjeta de crédito!\nEjemplo: /cck 4111111111111111")
         await sleep(15)
         await msg.delete()
     else:
         try:
-            mafia = await m.reply_text("Procesando... ⌛")
+            mafia = await m.reply_text("⌛ Procesando...")
             entrada = m.text.split(None, 1)[1]
             numero_tarjeta = entrada
 
@@ -134,6 +139,6 @@ async def cck(_, m: Message):
         except Exception as e:
             await m.reply_text(f"¡Ups! Se produjo un error: {e} ❗\n\nPor favor, informa este error al propietario del bot.")
 
-print("¡El bot está en línea! 🚀")
+print("🚀 ¡El bot está en línea! 🚀")
 
 Bot.run()
