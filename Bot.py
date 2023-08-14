@@ -5,8 +5,6 @@ from asyncio import sleep
 import random
 import string
 
-from datetime import datetime
-from card_validator import CardValidator
 from pyrogram.types import (
     Message, 
     InlineKeyboardButton, 
@@ -251,28 +249,6 @@ class GetGenerate:
                             json_value = {x: {"card": f"{card_number}",
                                               "data": f"0{random.randint(1, 10)}/{data_value}",
                                               "csv": random.randint(111, 9999)}}
-                            self.ready_card.update(json_value)
-                            break
-                else:
-                    while 1:
-                        card_number = f"{card_id}{random.randint(11111111111111, 99999999999999)}"
-                        if CardValidator(card_number).luhnValidator():
-                            data_value = int(datetime.now().strftime("%y")) + random.randint(2, 6)
-                            json_value = {x: {"card": f"{card_number}",
-                                              "data": f"0{random.randint(1, 10)}/{data_value}",
-                                              "csv": random.randint(111, 999)}}
-                            self.ready_card.update(json_value)
-                            break
-
-        if beautiful_card:
-            self.ready_card = GetGenerate().beautifulCard(self.ready_card)
-        if bank_info:
-            jsonInfoBank = {}
-            for card_id in self.ready_card:
-                ready_info = CardValidator(self.ready_card[card_id]['card']).cardInfo()
-                jsonInfoBank.update({card_id: {"value": self.ready_card[card_id], "info": ready_info}})
-            self.ready_card = jsonInfoBank
-        return self.ready_card
 
 class CardValidator:
     def __init__(self, card_number):
