@@ -55,7 +55,7 @@ async def inicio(_, m: Message):
             ],
             [
                 InlineKeyboardButton(
-                    "🔍 Código fuente", url="https://github.com/ImDenuwan/Bin-Checker-Bot"
+                    "Pasar A Premium 🏆", url="https://t.me/NtEasyMoney"
                 )
             ],
         ]
