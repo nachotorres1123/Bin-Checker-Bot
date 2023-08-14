@@ -64,10 +64,12 @@ async def ayuda(_, m: Message):
         "/inicio - Verificar si el bot está activo.\n/ayuda - Ver el menú de ayuda.\n/bin [consulta] - Verificar si un Bin es válido o inválido.\n/cck [tarjeta] - Verificar si una tarjeta de crédito es válida o inválida.\n/datos - Obtener datos de una URL."
     )
 
+# ... Importaciones y configuración ...
+
 @Bot.on_message(filters.command("bin"))
 async def bin(_, m: Message):
     if len(m.command) < 2:
-        msg = await m.reply_text("¡Por favor, proporciona un Bin!\nEjemplo: /bin 401658")
+        msg = await m.reply_text("Por favor, proporciona un número de BIN.\nEjemplo: /bin 401658")
         await sleep(15)
         await msg.delete()
     else:
@@ -86,54 +88,32 @@ async def bin(_, m: Message):
             
             if respuesta.status_code == 200:
                 datos = respuesta.json()
-                print(datos)  # Agregamos esta línea para imprimir la respuesta JSON completa
-                try:
-                    nombre_banco = datos.get("bank_name", "No disponible")
-                    marca_tarjeta = datos.get("scheme", "No disponible")
-                    pais = datos.get("country", "No disponible")
-                    tipo = datos.get("type", "No disponible")
-                    bin_numero = datos.get("bin", "No disponible")
-                    mencion_de = m.from_user.mention
-                    caption = f"""
-Nombre del banco: {nombre_banco}
-Marca de la tarjeta: {marca_tarjeta}
-País: {pais}
-Tipo: {tipo}
-Número Bin: {bin_numero}
-
-Verificado por: {mencion_de}
-Bot creado por: {mencion_de}
-Código fuente del bot: [GitHub](https://github.com/ImDenuwan/Bin-Checker-Bot)
-"""
-                    await mafia.edit_text(caption, disable_web_page_preview=True)
-                except KeyError as e:
-                    await mafia.edit_text(f"Error: {e}\n\nRespuesta: {respuesta.text}")
+                nombre_banco = datos.get("bank_name", "No disponible")
+                marca_tarjeta = datos.get("scheme", "No disponible")
+                pais = datos.get("country", "No disponible")
+                tipo = datos.get("type", "No disponible")
+                bin_numero = datos.get("bin", "No disponible")
+                mencion_de = m.from_user.mention
+                
+                caption = (
+                    f"**Información del BIN**\n\n"
+                    f"Nombre del banco: {nombre_banco}\n"
+                    f"Marca de la tarjeta: {marca_tarjeta}\n"
+                    f"País: {pais}\n"
+                    f"Tipo: {tipo}\n"
+                    f"Número Bin: {bin_numero}\n\n"
+                    f"Verificado por: {mencion_de}\n"
+                    f"Bot creado por: {mencion_de}\n"
+                    f"Código fuente del bot: [GitHub](https://github.com/ImDenuwan/Bin-Checker-Bot)"
+                )
+                
+                await mafia.edit_text(caption, disable_web_page_preview=True)
             else:
-                await mafia.edit_text("Bin inválido o se produjo un error.")
+                await mafia.edit_text("Ha ocurrido un error al verificar el BIN.")
         except Exception as e:
             await m.reply_text(f"¡Ups! Se produjo un error:\n{e}\n\nPor favor, informa este error al propietario del bot.")
 
-@Bot.on_message(filters.command("cck"))
-async def cck(_, m: Message):
-    if len(m.command) < 2:
-        msg = await m.reply_text("¡Por favor, proporciona una tarjeta de crédito!\nEjemplo: /cck 4111111111111111")
-        await sleep(15)
-        await msg.delete()
-    else:
-        try:
-            mafia = await m.reply_text("Procesando...")
-            entrada = m.text.split(None, 1)[1]
-            numero_tarjeta = entrada
-
-            es_valida = validate_credit_card(numero_tarjeta)
-
-            mencion_de = m.from_user.mention
-            mensaje = f"La tarjeta de crédito {numero_tarjeta} es {es_valida}.\n\nVerificado por: {mencion_de}"
-
-            await mafia.edit_text(mensaje)
-        except Exception as e:
-            await m.reply_text(f"¡Ups! Se produjo un error:\n{e}\n\nPor favor, informa este error al propietario del bot.")
-
-print("¡El bot está en línea!")
+# ... Resto del código ...
 
 Bot.run()
+
