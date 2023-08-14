@@ -128,8 +128,27 @@ Haste Premium : [Admin 🏆](https://t.me/NtEasyMoney)
 
 @Bot.on_message(filters.command("cck"))
 async def cck(_, m: Message):
-    # Agregar la lógica para manejar el comando /cck aquí
-    pass
+    if len(m.command) < 2:
+        msg = await m.reply_text("💳 Por favor, proporciona una tarjeta de crédito.\nEjemplo: /cck 4111111111111111")
+        await sleep(15)
+        await msg.delete()
+    else:
+        try:
+            mafia = await m.reply_text("⌛ Verificando la tarjeta de crédito...")
+            entrada = m.text.split(None, 1)[1]
+            numero_tarjeta = entrada
+
+            es_valida = validate_credit_card(numero_tarjeta)
+
+            mencion_de = m.from_user.mention
+            mensaje = f"🛒 Tarjeta de Crédito: `{numero_tarjeta}`\n"
+            mensaje += f"🔍 Estado: **{es_valida}**\n"
+            mensaje += f"👤 Verificado por: {mencion_de}"
+
+            await mafia.edit_text(mensaje, parse_mode="markdown")
+        except Exception as e:
+            await m.reply_text(f"¡Ups! Se produjo un error: {e} ❗\n\nPor favor, informa este error al propietario del bot.")
+
 
 @Bot.on_message(filters.command("Scr"))
 async def scr_command_handler(_, m: Message):
