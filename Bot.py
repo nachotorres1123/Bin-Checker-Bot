@@ -84,7 +84,9 @@ async def ayuda(_, m: Message):
         "🌐 /datos - Obtener datos de una URL.🚫"
     )
 
-@Bot.on_message(filters.command("bin"))
+
+@dp.message_handler(filters.command("cck"))
+async def cck(message: Messa@Bot.on_message(filters.command("bin"))
 async def bin(_, m: Message):
     if len(m.command) < 2:
         msg = await m.reply_text("📝 ¡Por favor, proporciona un Bin!\nEjemplo: /bin 401658")
@@ -127,11 +129,12 @@ async def bin(_, m: Message):
                     await mafia.edit_text(f"❗ Error: {e}\n\nRespuesta: {respuesta.text}")
             else:
                 await mafia.edit_text("❌ Bin inválido o se produjo un error.")
+        except requests.RequestException as req_err:
+            await mafia.edit_text(f"❗ Error en la solicitud a la API: {req_err}")
         except Exception as e:
             await m.reply_text(f"¡Ups! Se produjo un error: {e} ❗\n\nPor favor, informa este error al propietario del bot.")
 
-@dp.message_handler(filters.command("cck"))
-async def cck(message: Message):
+# Resto del código ...ge):
     try:
         if len(message.text.split()) < 2:
             msg = await message.reply("💳 Por favor, proporciona un número de tarjeta de crédito válido.\nEjemplo: /cck 403121xxxxxxxxxx xx xx xxx")
