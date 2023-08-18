@@ -47,6 +47,7 @@ def generate_password(length=12):
 @Bot.on_message(filters.command("start"))
 async def inicio(_, m: Message):
     mencion_usuario = m.from_user.mention
+
     teclado = InlineKeyboardMarkup(
         [
             [
@@ -54,16 +55,27 @@ async def inicio(_, m: Message):
                 InlineKeyboardButton("💬 Soporte", url="https://t.me/NtEasyMoney"),
             ],
             [
-                InlineKeyboardButton(
-                    "Pasar A Premium 🏆", url="https://t.me/NtEasyMoney"
-                )
+                InlineKeyboardButton("🔒 Generar Contraseña Segura", callback_data="generate_password"),
+                InlineKeyboardButton("💳 Verificar Bin", callback_data="verify_bin"),
+            ],
+            [
+                InlineKeyboardButton("🏆 Pasar A Premium", url="https://t.me/NtEasyMoney")
             ],
         ]
     )
-    await m.reply_text(
-        f"Hola, {mencion_usuario} 👋\nPuedo verificar si un Bin es válido o inválido y generar contraseñas seguras.\n\nPara ver más, usa el comando /ayuda.",
-        reply_markup=teclado,
+
+    mensaje = (
+        f"👋 ¡Hola, {mencion_usuario}!\n\n"
+        "¡Bienvenido a NtEasyBot! 🤖💼\n\n"
+        "🔍 Explora nuestras funciones:\n\n"
+        "1. Verifica si un Bin es válido o inválido utilizando /bin [número].\n"
+        "2. Genera contraseñas seguras con /Scr [longitud].\n\n"
+        "🌟 ¡Disfruta de una experiencia Premium para acceder a funciones exclusivas!\n\n"
+        "¿Necesitas ayuda? Usa /ayuda."
     )
+
+    await m.reply_text(mensaje, reply_markup=teclado)
+
 
 @Bot.on_message(filters.command("ayuda"))
 async def ayuda(_, m: Message):
