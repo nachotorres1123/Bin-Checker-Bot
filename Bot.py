@@ -4,14 +4,7 @@ from configs import config
 from asyncio import sleep
 import random
 import string
-from pytz import timezone
-from datetime import datetime
-import re
-from aiogram.types import ParseMode
-from bot import dp, bot, i18n
-from aiogram.types import Message
-from aiogram.dispatcher import filters
-from asyncio import sleep
+
 from pyrogram.types import (
     Message, 
     InlineKeyboardButton, 
@@ -84,9 +77,7 @@ async def ayuda(_, m: Message):
         "🌐 /datos - Obtener datos de una URL.🚫"
     )
 
-
-@dp.message_handler(filters.command("cck"))
-async def cck(message: Messa@Bot.on_message(filters.command("bin"))
+@Bot.on_message(filters.command("bin"))
 async def bin(_, m: Message):
     if len(m.command) < 2:
         msg = await m.reply_text("📝 ¡Por favor, proporciona un Bin!\nEjemplo: /bin 401658")
@@ -129,33 +120,31 @@ async def bin(_, m: Message):
                     await mafia.edit_text(f"❗ Error: {e}\n\nRespuesta: {respuesta.text}")
             else:
                 await mafia.edit_text("❌ Bin inválido o se produjo un error.")
-        except requests.RequestException as req_err:
-            await mafia.edit_text(f"❗ Error en la solicitud a la API: {req_err}")
         except Exception as e:
             await m.reply_text(f"¡Ups! Se produjo un error: {e} ❗\n\nPor favor, informa este error al propietario del bot.")
 
-# Resto del código ...ge):
-    try:
-        if len(message.text.split()) < 2:
-            msg = await message.reply("💳 Por favor, proporciona un número de tarjeta de crédito válido.\nEjemplo: /cck 403121xxxxxxxxxx xx xx xxx")
-            await sleep(15)
-            await msg.delete()
-        else:
-            mafia = await message.reply("⌛ Verificando la tarjeta de crédito...")
-            entrada = " ".join(message.text.split()[1:])
-            numero_tarjeta = re.sub(r'[\s:*|/@]', '', entrada)  # Remover caracteres no deseados
+@Bot.on_message(filters.command("cck"))
+async def cck(_, m: Message):
+    if len(m.command) < 2:
+        msg = await m.reply_text("💳 Por favor, proporciona una tarjeta de crédito.\nEjemplo: /cck 403121xxxxxxxxxx xx xx xxx")
+        await sleep(15)
+        await msg.delete()
+    else:
+        try:
+            mafia = await m.reply_text("⌛ Verificando la tarjeta de crédito...")
+            entrada = m.text.split(None, 1)[1]
+            numero_tarjeta = entrada
 
-            es_valida = is_valid_credit_card(numero_tarjeta)
+            es_valida = validate_credit_card(numero_tarjeta)
 
-            mencion_de = message.from_user.mention
-            mensaje = f"🛒 Tarjeta de Crédito: `{entrada}`\n"
-            mensaje += f"🔍 Estado: **{'Válida' if es_valida else 'Inválida'}**\n"
+            mencion_de = m.from_user.mention
+            mensaje = f"🛒 Tarjeta de Crédito: `{numero_tarjeta}`\n"
+            mensaje += f"🔍 Estado: **{es_valida}**\n"
             mensaje += f"👤 Verificado por: {mencion_de}"
 
-            await mafia.edit_text(mensaje, parse_mode=ParseMode.MARKDOWN)
-    except Exception as e:
-        await message.reply(f"¡Ups! Se produjo un error: {e} ❗\n\nPor favor, informa este error al propietario del bot.")
-
+            await mafia.edit_text(mensaje, parse_mode="markdown")
+        except Exception as e:
+            await m.reply_text(f"¡Ups! Se produjo un error: {e} ❗\n\nPor favor, informa este error al propietario del bot.")
 
 
 @Bot.on_message(filters.command("Scr"))
