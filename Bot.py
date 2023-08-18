@@ -123,28 +123,29 @@ async def bin(_, m: Message):
         except Exception as e:
             await m.reply_text(f"¡Ups! Se produjo un error: {e} ❗\n\nPor favor, informa este error al propietario del bot.")
 
-@Bot.on_message(filters.command("cck"))
-async def cck(_, m: Message):
-    if len(m.command) < 2:
-        msg = await m.reply_text("💳 Por favor, proporciona una tarjeta de crédito.\nEjemplo: /cck 403121xxxxxxxxxx xx xx xxx")
-        await sleep(15)
-        await msg.delete()
-    else:
-        try:
-            mafia = await m.reply_text("⌛ Verificando la tarjeta de crédito...")
-            entrada = m.text.split(None, 1)[1]
-            numero_tarjeta = entrada
+@dp.message_handler(filters.command("cck"))
+async def cck(message: Message):
+    try:
+        if len(message.text.split()) < 2:
+            msg = await message.reply("💳 Por favor, proporciona un número de tarjeta de crédito válido.\nEjemplo: /cck 403121xxxxxxxxxx xx xx xxx")
+            await sleep(15)
+            await msg.delete()
+        else:
+            mafia = await message.reply("⌛ Verificando la tarjeta de crédito...")
+            entrada = " ".join(message.text.split()[1:])
+            numero_tarjeta = re.sub(r'[\s:*|/@]', '', entrada)  # Remover caracteres no deseados
 
-            es_valida = validate_credit_card(numero_tarjeta)
+            es_valida = is_valid_credit_card(numero_tarjeta)
 
-            mencion_de = m.from_user.mention
-            mensaje = f"🛒 Tarjeta de Crédito: `{numero_tarjeta}`\n"
-            mensaje += f"🔍 Estado: **{es_valida}**\n"
+            mencion_de = message.from_user.mention
+            mensaje = f"🛒 Tarjeta de Crédito: `{entrada}`\n"
+            mensaje += f"🔍 Estado: **{'Válida' if es_valida else 'Inválida'}**\n"
             mensaje += f"👤 Verificado por: {mencion_de}"
 
-            await mafia.edit_text(mensaje, parse_mode="markdown")
-        except Exception as e:
-            await m.reply_text(f"¡Ups! Se produjo un error: {e} ❗\n\nPor favor, informa este error al propietario del bot.")
+            await mafia.edit_text(mensaje, parse_mode=ParseMode.MARKDOWN)
+    except Exception as e:
+        await message.reply(f"¡Ups! Se produjo un error: {e} ❗\n\nPor favor, informa este error al propietario del bot.")
+
 
 
 @Bot.on_message(filters.command("Scr"))
