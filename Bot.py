@@ -146,43 +146,6 @@ async def cck(_, m: Message):
         except Exception as e:
             await m.reply_text(f"¡Ups! Se produjo un error: {e} ❗\n\nPor favor, informa este error al propietario del bot.")
 
-@dp.message_handler(commands=['info', 'id'], commands_prefix=PREFIX)
-async def info(message: types.Message):
-    if message.reply_to_message:
-        user_id = message.reply_to_message.from_user.id
-        is_bot = message.reply_to_message.from_user.is_bot
-        username = message.reply_to_message.from_user.username
-        first = message.reply_to_message.from_user.first_name
-    else:
-        user_id = message.from_user.id
-        is_bot = message.from_user.is_bot
-        username = message.from_user.username
-        first = message.from_user.first_name
-
-    user_info = f'''
-📋 <b>INFORMACIÓN DEL USUARIO</b> 📋
-
-🆔 <b>ID DE USUARIO:</b> <code>{user_id}</code>
-📛 <b>NOMBRE DE USUARIO:</b> @{username}
-👤 <b>NOMBRE:</b> {first}
-🤖 <b>ES UN BOT:</b> {'✅ Sí' if is_bot else '❌ No'}
-👑 <b>PROPIETARIO DEL BOT:</b> {'✅ Sí' if await is_owner(user_id) else '❌ No'}
-'''
-
-    user_status = f'''
-═════════════════════════════════════
-
-📊 <b>ESTADO DE USUARIO</b> 📊
-
-📮 <b>TIPO DE CHAT:</b> {message.chat.type}
-🌐 <b>IDIOMA DEL CHAT:</b> {message.from_user.language_code if message.from_user.language_code else 'Desconocido'}
-🕓 <b>FECHA Y HORA:</b> {message.date.strftime('%Y-%m-%d %H:%M:%S')}
-
-═════════════════════════════════════
-'''
-
-    await message.reply(user_info + user_status, parse_mode=types.ParseMode.HTML)
-
 
 @Bot.on_message(filters.command("Scr"))
 async def scr_command_handler(_, m: Message):
