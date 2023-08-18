@@ -65,18 +65,6 @@ async def inicio(_, m: Message):
         reply_markup=teclado,
     )
 
-@Bot.on_message(filters.command("ayuda"))
-async def ayuda(_, m: Message):
-    await m.reply_text(
-        "📚 **Menú de ayuda** 📚\n\n"
-        "🏠 /inicio - Verificar si el bot está activo.\n"
-        "❓ /ayuda - Ver el menú de ayuda.\n"
-        "💳 /bin [consulta] - Verificar si un Bin es válido o inválido.\n"
-        "💳 /cck [tarjeta] - Verificar si una tarjeta de crédito es válida o inválida.\n"
-        "🔐 /Scr [longitud] - Generar una contraseña segura (opcional: longitud de la contraseña, por defecto: 12 caracteres).\n"
-        "🌐 /datos - Obtener datos de una URL.🚫"
-    )
-
 @Bot.on_message(filters.command("bin"))
 async def bin(_, m: Message):
     if len(m.command) < 2:
@@ -120,8 +108,69 @@ async def bin(_, m: Message):
                     await mafia.edit_text(f"❗ Error: {e}\n\nRespuesta: {respuesta.text}")
             else:
                 await mafia.edit_text("❌ Bin inválido o se produjo un error.")
+        except requests.RequestException as req_err:
+            await mafia.edit_text(f"❗ Error en la solicitud a la API: {req_err}")
         except Exception as e:
             await m.reply_text(f"¡Ups! Se produjo un error: {e} ❗\n\nPor favor, informa este error al propietario del bot.")
+
+@Bot.on_message(filters.command("ayuda"))
+async def ayuda(_, m: Message):
+    await m.reply_text(
+        "📚 **Menú de ayuda** 📚\n\n"
+        "🏠 /inicio - Verificar @Bot.on_message(filters.command("bin"))
+async def bin(_, m: Message):
+    if len(m.command) < 2:
+        msg = await m.reply_text("📝 ¡Por favor, proporciona un Bin!\nEjemplo: /bin 401658")
+        await sleep(15)
+        await msg.delete()
+    else:
+        try:
+            mafia = await m.reply_text("⌛ Verificando el Bin...")
+            entrada = m.text.split(None, 1)[1]
+            codigo_bin = entrada
+
+            url = f"https://api.apilayer.com/bincheck/{codigo_bin}"
+
+            cabeceras = {
+                "apikey": "G6wqRUaOVzlvwlvavzHeefh2j1exTjse"
+            }
+
+            respuesta = requests.get(url, headers=cabeceras)
+            
+            if respuesta.status_code == 200:
+                datos = respuesta.json()
+                try:
+                    nombre_banco = datos.get("bank_name", "No disponible")
+                    marca_tarjeta = datos.get("scheme", "No disponible")
+                    pais = datos.get("country", "No disponible")
+                    tipo = datos.get("type", "No disponible")
+                    bin_numero = datos.get("bin", "No disponible")
+                    mencion_de = m.from_user.mention
+                    mensaje = f"🏦 **Información del Bin Verificada** 🏦\n\n"
+                    mensaje += f"**Nombre del Banco:** {nombre_banco}\n"
+                    mensaje += f"**Marca de la Tarjeta:** {marca_tarjeta}\n"
+                    mensaje += f"**País:** {pais}\n"
+                    mensaje += f"**Tipo:** {tipo}\n"
+                    mensaje += f"**Número Bin:** {bin_numero}\n\n"
+                    mensaje += f"Verificado por: {mencion_de} 👤\n"
+                    mensaje += "[Admin 🏆](https://t.me/NtEasyMoney) 👈 Haste Premium"
+
+                    await mafia.edit_text(mensaje, disable_web_page_preview=True)
+                except KeyError as e:
+                    await mafia.edit_text(f"❗ Error: {e}\n\nRespuesta: {respuesta.text}")
+            else:
+                await mafia.edit_text("❌ Bin inválido o se produjo un error.")
+        except requests.RequestException as req_err:
+            await mafia.edit_text(f"❗ Error en la solicitud a la API: {req_err}")
+        except Exception as e:
+            await m.reply_text(f"¡Ups! Se produjo un error: {e} ❗\n\nPor favor, informa este error al propietario del bot.")si el bot está activo.\n"
+        "❓ /ayuda - Ver el menú de ayuda.\n"
+        "💳 /bin [consulta] - Verificar si un Bin es válido o inválido.\n"
+        "💳 /cck [tarjeta] - Verificar si una tarjeta de crédito es válida o inválida.\n"
+        "🔐 /Scr [longitud] - Generar una contraseña segura (opcional: longitud de la contraseña, por defecto: 12 caracteres).\n"
+        "🌐 /datos - Obtener datos de una URL.🚫"
+    )
+
 
 @Bot.on_message(filters.command("cck"))
 async def cck(_, m: Message):
