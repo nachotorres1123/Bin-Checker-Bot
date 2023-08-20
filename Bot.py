@@ -21,9 +21,12 @@ Bot = Client(
 )
 
 def luhn_algorithm(card_number):
-    card_number = card_number.replace(" ", "")  # 🧹 Elimina los espacios en blanco
-    card_digits = [int(digit) for digit in card_number]
+    card_number = card_number.replace(" ", "")  # 🧹 Elimina los espacios en blanco y caracteres especiales
+    card_digits = [int(digit) for digit in card_number if digit.isdigit()]  # Solo toma dígitos numéricos
     card_digits.reverse()
+    
+    # Resto del código del algoritmo de Luhn...
+
 
     total = 0
     for i, digit in enumerate(card_digits):
