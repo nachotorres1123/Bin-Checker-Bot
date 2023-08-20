@@ -161,7 +161,7 @@ async def cck(_, m: Message):
                 await mafia.edit_text("⚠️ La tarjeta de crédito contiene caracteres no válidos.")
                 return
 
-            es_valida = validate_credit_card(numero_tarjeta)
+            es_valida = luhn_algorithm(numero_tarjeta)  # Cambio de función aquí
 
             mencion_de = m.from_user.mention
             mensaje = f"🛒 Tarjeta de Crédito: `{numero_tarjeta}`\n"
@@ -171,6 +171,7 @@ async def cck(_, m: Message):
             await mafia.edit_text(mensaje, parse_mode="markdown")
         except Exception as e:
             await m.reply_text(f"¡Ups! Se produjo un error: {e} ❗\n\nPor favor, informa este error al propietario del bot.")
+
 
 
 @Bot.on_message(filters.command("mchk"))
