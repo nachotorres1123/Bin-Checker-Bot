@@ -38,11 +38,15 @@ def luhn_algorithm(card_number):
 
     return total % 10 == 0
 
-def validate_credit_card(card_number):
-    if luhn_algorithm(card_number):
-        return "Válida ✅"
-    else:
-        return "Inválida ❌"
+def validate_credit_cards(card_numbers):
+    results = []
+    for card_number in card_numbers:
+        if luhn_algorithm(card_number):
+            results.append(f"{card_number}: Válida ✅")
+        else:
+            results.append(f"{card_number}: Inválida ❌")
+    return results
+
 
 def generate_password(length=12):
     characters = string.digits
@@ -167,6 +171,37 @@ async def cck(_, m: Message):
             await mafia.edit_text(mensaje, parse_mode="markdown")
         except Exception as e:
             await m.reply_text(f"¡Ups! Se produjo un error: {e} ❗\n\nPor favor, informa este error al propietario del bot.")
+
+
+@Bot.on_message(filters.command("mchk"))
+async def mchk(_, m: Message):
+    if len(m.command) < 2:
+        msg = await m.reply_text("💳 Por favor, proporciona una o más tarjetas de crédito.\nEjemplo: /mchk 403121xxxxxxxxxx 512312xxxxxxx")
+        await sleep(15)
+        await msg.delete()
+    else:
+        try:
+            mafia = await m.reply_text("⌛ Verificando las tarjetas de crédito...")
+            entradas = m.text.split(None, 1)[1].split()  # Divide las tarjetas separadas por espacios
+
+            # Valida que las entradas contengan solo números y los caracteres especiales permitidos
+            for entrada in entradas:
+                if not re.match(r'^[\d|/:]*$', entrada.replace(" ", "")):
+                    await mafia.edit_text("⚠️ Al menos una tarjeta de crédito contiene caracteres no válidos.")
+                    return
+
+            resultados = validate_credit_cards(entradas)
+
+            mencion_de = m.from_user.mention
+            mensaje = "🛒 **Resultados de Verificación de Tarjetas de Crédito** 🛒\n\n"
+            mensaje += "\n".join(resultados)
+            mensaje += f"\n\nVerificado por: {mencion_de}"
+
+            await mafia.edit_text(mensaje, parse_mode="markdown")
+        except Exception as e:
+            await m.reply_text(f"¡Ups! Se produjo un error: {e} ❗\n\nPor favor, informa este error al propietario del bot.")
+
+
 
 @Bot.on_message(filters.command("Scr"))
 async def scr_command_handler(_, m: Message):
